@@ -1,5 +1,6 @@
 "use client";
 
+import { usePathname } from "next/navigation";
 import { Show, SignInButton, UserButton } from "@clerk/nextjs";
 
 import { Logo } from "@/components/logo";
@@ -14,12 +15,12 @@ import {
 } from "@/components/ui/sheet";
 
 const NAV_LINKS = [
-  { label: "Home", href: "#top" },
-  { label: "Opportunities", href: "#opportunities" },
-  { label: "Online Sessions", href: "#sessions" },
-  { label: "Guides", href: "#guides" },
-  { label: "Community", href: "#community" },
-  { label: "About", href: "#about" },
+  { label: "Home", section: "top", page: "/" },
+  { label: "Opportunities", section: "opportunities", page: "/opportunities" },
+  { label: "Online Sessions", section: "sessions", page: "/sessions" },
+  { label: "Guides", section: "guides", page: "/guides" },
+  { label: "Community", section: "community", page: "/community" },
+  { label: "About", section: "about", page: "/about" },
 ];
 
 function AuthButtons({ className }: { className?: string }) {
@@ -46,13 +47,20 @@ function AuthButtons({ className }: { className?: string }) {
 }
 
 export function SiteHeader() {
+  const pathname = usePathname();
+  const isHome = pathname === "/";
+
+  const links = NAV_LINKS.map((l) => ({
+    label: l.label,
+    href: isHome ? `#${l.section}` : l.page,
+  }));
   return (
     <header className="sticky top-0 z-50 border-b border-border/70 bg-background/80 backdrop-blur-md">
       <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-6 px-6">
         <Logo />
 
         <ul className="hidden items-center gap-7 lg:flex">
-          {NAV_LINKS.map((link) => (
+          {links.map((link) => (
             <li key={link.label}>
               <a
                 href={link.href}
@@ -68,7 +76,7 @@ export function SiteHeader() {
           <Button
             variant="outline"
             size="xs"
-            render={<a href="#opportunities" />}
+            render={<a href={isHome ? "#opportunities" : "/opportunities"} />}
           >
             Explore opportunities
           </Button>
@@ -99,7 +107,7 @@ export function SiteHeader() {
               </SheetDescription>
             </SheetHeader>
             <nav className="flex flex-col gap-2 px-4" aria-label="Mobile">
-              {NAV_LINKS.map((link) => (
+              {links.map((link) => (
                 <a
                   key={link.label}
                   href={link.href}
@@ -114,7 +122,7 @@ export function SiteHeader() {
               <Button
                 variant="outline"
                 size="sm"
-                render={<a href="#opportunities" />}
+            render={<a href={isHome ? "#opportunities" : "/opportunities"} />}
               >
                 Explore opportunities
               </Button>

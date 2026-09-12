@@ -36,8 +36,8 @@ export default async function GuidesPage() {
             description="Practical, no-fluff guides written for young people applying to international programmes."
           />
         </div>
-        <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6">
-          <div className="grid gap-px overflow-hidden rounded-3xl border border-border bg-border sm:grid-cols-2">
+        <div className="mx-auto max-w-5xl px-4 py-12 sm:px-6">
+          <div className="grid gap-px overflow-hidden rounded-3xl border border-border bg-border sm:grid-cols-3">
             {guides.map((guide, index) => (
               <Link
                 key={guide.id}
