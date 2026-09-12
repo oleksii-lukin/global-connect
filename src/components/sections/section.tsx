@@ -60,11 +60,11 @@ export function SectionEyebrow({
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-2 rounded-full border border-border bg-card/60 px-4 py-1.5 text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground",
+        "inline-flex items-center gap-2 rounded-full border border-border bg-card/60 px-4 py-1.5 text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground glow-soft",
         className,
       )}
     >
-      <span className={cn("h-1.5 w-1.5 rounded-full", eyebrowDotClass[dot])} />
+      <span className={cn("h-1.5 w-1.5 rounded-full pulse-soft", eyebrowDotClass[dot])} />
       {children}
     </span>
   );

@@ -39,7 +39,7 @@ export default async function HomePage() {
     ]);
 
   const featured = opportunities.filter((o) => o.featured);
-  const heroFeatured = featured.length > 0 ? featured : opportunities;
+  const heroFeatured = (featured.length >= 3 ? featured : opportunities).slice(0, 3);
 
   return (
     <>

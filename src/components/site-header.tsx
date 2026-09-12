@@ -72,7 +72,7 @@ export function SiteHeader() {
           >
             Explore opportunities
           </Button>
-          <AuthButtons />
+          <AuthButtons className="flex items-center" />
         </div>
 
         <Sheet>

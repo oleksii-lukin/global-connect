@@ -181,6 +181,34 @@
   animation: 18s ease-in-out infinite drift;
 }
 
+@keyframes pulse-soft {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+
+.pulse-soft {
+  animation: 3s ease-in-out infinite pulse-soft;
+}
+
+@keyframes glow-soft {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(163, 196, 167, 0);
+  }
+  50% {
+    box-shadow: 0 0 14px 2px rgba(163, 196, 167, 0.35);
+  }
+}
+
+.glow-soft {
+  animation: 3s ease-in-out infinite glow-soft;
+}
+
 .reveal {
   opacity: 0;
   transform: translateY(24px);

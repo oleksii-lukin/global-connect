@@ -93,55 +93,61 @@ export function OpportunityFinder({
         description="Stop scrolling through opportunities you can't apply for."
       />
 
-      <div className="mx-auto mb-10 flex max-w-4xl flex-col gap-3">
-        <Input
-          type="search"
-          placeholder="Search opportunities…"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          aria-label="Search opportunities"
-        />
-        <div className="flex flex-wrap gap-2.5">
-          <FilterSelect
-            label="Any country"
-            value={country}
-            onChange={setCountry}
-            options={countries}
+      <div className="mx-auto mb-10 mt-12 max-w-3xl">
+        <div className="flex items-center gap-3 rounded-full border border-border bg-card px-5 py-3 shadow-[0_10px_30px_-22px_rgba(36,36,64,0.5)]">
+          <span aria-hidden="true" className="text-lg leading-none">🔎</span>
+          <Input
+            type="search"
+            placeholder="Search opportunities…"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            aria-label="Search opportunities"
+            className="h-auto w-full border-0 bg-transparent p-0 rounded-none text-base md:text-[16px] text-foreground outline-none placeholder:text-muted-foreground focus-visible:ring-0"
           />
-          <FilterSelect
-            label="Any type"
-            value={type}
-            onChange={setType}
-            options={types}
-          />
-          <FilterSelect
-            label="Any funding"
-            value={funding}
-            onChange={setFunding}
-            options={fundings}
-          />
-          <FilterSelect
-            label="Any age"
-            value={age}
-            onChange={setAge}
-            options={ages}
-          />
-          <FilterSelect
-            label="Any deadline"
-            value={deadline}
-            onChange={setDeadline}
-            options={deadlines}
-          />
-          {hasActiveFilters && (
-            <Button
-              variant="ghost"
-              className="rounded-full px-4 py-2 text-sm"
-              onClick={resetFilters}
-            >
-              <RotateCcw className="size-3.5" />
-              Clear
-            </Button>
-          )}
+        </div>
+        <div className="-mx-6 mt-4 overflow-x-auto px-6 pb-1">
+          <div className="flex w-max gap-2 sm:w-auto sm:flex-wrap sm:justify-center">
+            <FilterSelect
+              label="Country"
+              value={country}
+              onChange={setCountry}
+              options={countries}
+            />
+            <FilterSelect
+              label="Type"
+              value={type}
+              onChange={setType}
+              options={types}
+            />
+            <FilterSelect
+              label="Age"
+              value={age}
+              onChange={setAge}
+              options={ages}
+            />
+            <FilterSelect
+              label="Funding"
+              value={funding}
+              onChange={setFunding}
+              options={fundings}
+            />
+            <FilterSelect
+              label="Deadline"
+              value={deadline}
+              onChange={setDeadline}
+              options={deadlines}
+            />
+            {hasActiveFilters && (
+              <Button
+                variant="ghost"
+                className="shrink-0 rounded-full px-4 py-2 text-sm"
+                onClick={resetFilters}
+              >
+                <RotateCcw className="size-3.5" />
+                Clear
+              </Button>
+            )}
+          </div>
         </div>
       </div>
 
@@ -181,18 +187,21 @@ function FilterSelect({
   onChange: (v: string) => void;
   options: string[];
 }) {
+  const isActive = value !== "all";
+
   return (
-    <Select value={value} onValueChange={(next) => onChange(next ?? "all")}>
+    <Select
+      key={value}
+      value={isActive ? value : undefined}
+      onValueChange={(next) => onChange(next ?? "all")}
+    >
       <SelectTrigger
         aria-label={label}
-        className="h-9 w-fit rounded-full border border-border bg-background px-4 text-sm hover:bg-muted"
+        className="h-auto w-fit shrink-0 gap-1 rounded-full border border-border bg-card/60 px-4 py-2 text-sm text-muted-foreground transition-colors hover:border-foreground/25 hover:text-foreground"
       >
         <SelectValue placeholder={label} />
       </SelectTrigger>
       <SelectContent>
-        <SelectItem value="all">
-          <span className="text-muted-foreground">{label}</span>
-        </SelectItem>
         {options.map((option) => (
           <SelectItem key={option} value={option}>
             {option}
