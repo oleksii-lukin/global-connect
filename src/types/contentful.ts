@@ -89,6 +89,15 @@ export type InterestSkeleton = EntrySkeletonType<
   "interest"
 >;
 
+export type CommunitySkeleton = EntrySkeletonType<
+  {
+    emoji: EntryFieldTypes.Symbol<string>;
+    label: EntryFieldTypes.Symbol<string>;
+    members: EntryFieldTypes.Symbol<string>;
+  },
+  "community"
+>;
+
 export type Opportunity = Entry<OpportunitySkeleton, undefined, "en-US">;
 export type Session = Entry<SessionSkeleton, undefined, "en-US">;
 export type Guide = Entry<GuideSkeleton, undefined, "en-US">;
@@ -96,3 +105,4 @@ export type Story = Entry<StorySkeleton, undefined, "en-US">;
 export type Partner = Entry<PartnerSkeleton, undefined, "en-US">;
 export type PathStep = Entry<PathStepSkeleton, undefined, "en-US">;
 export type Interest = Entry<InterestSkeleton, undefined, "en-US">;
+export type Community = Entry<CommunitySkeleton, undefined, "en-US">;

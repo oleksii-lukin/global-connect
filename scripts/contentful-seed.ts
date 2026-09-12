@@ -1,11 +1,12 @@
 import { config } from "dotenv";
 import { createClient } from "contentful-management";
-import type { Document } from "@contentful/rich-text-types";
-import { BLOCKS } from "@contentful/rich-text-types";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
+import { BLOCKS } from "@contentful/rich-text-types";
+import type { Document } from "@contentful/rich-text-types";
 import {
+  seedCommunity,
   seedInterests,
   seedOpportunities,
   seedPartners,
@@ -43,21 +44,91 @@ if (!SPACE || !TOKEN) {
   process.exit(1);
 }
 
-const richText = (text: string): Document => ({
-  nodeType: BLOCKS.DOCUMENT,
-  data: {},
-  content: [
-    {
-      nodeType: BLOCKS.PARAGRAPH,
-      data: {},
-      content: [{ nodeType: "text", value: text, marks: [], data: {} }],
-    },
-  ],
-});
-
 // Plain client (default in contentful-management v12) — the legacy nested
 // client is deprecated. Calls are parameter-based: client.entry.get({ ... }).
 const client = createClient({ accessToken: TOKEN });
+
+// ---------------------------------------------------------------------------
+// Rich-text helpers (shared with the bundled seed)
+// ---------------------------------------------------------------------------
+
+type RTNode = {
+  nodeType: string;
+  data: Record<string, unknown>;
+  content: RTNode[];
+};
+
+function collectAssetIds(doc: Document | undefined): string[] {
+  const ids: string[] = [];
+  const walk = (nodes: RTNode[]) => {
+    for (const node of nodes) {
+      if (node.nodeType === BLOCKS.EMBEDDED_ASSET) {
+        const target = node.data.target as { sys?: { id?: string } } | undefined;
+        if (target?.sys?.id) ids.push(target.sys.id);
+      }
+      if (Array.isArray(node.content)) walk(node.content);
+    }
+  };
+  if (doc) walk(doc.content as RTNode[]);
+  return ids;
+}
+
+/** Rewrite inline asset objects into Asset Links for the CMS (images are
+ *  uploaded separately by assetId). */
+function toContentfulBody(doc: Document | undefined): Document | undefined {
+  if (!doc) return undefined;
+  const clone = structuredClone(doc) as Document & { content: RTNode[] };
+  const walk = (nodes: RTNode[]) => {
+    for (const node of nodes) {
+      if (node.nodeType === BLOCKS.EMBEDDED_ASSET) {
+        const target = node.data.target as { sys?: { id?: string } } | undefined;
+        if (target?.sys?.id) {
+          node.data.target = {
+            sys: { type: "Link", linkType: "Asset", id: target.sys.id },
+          };
+        }
+      }
+      if (Array.isArray(node.content)) walk(node.content);
+    }
+  };
+  walk(clone.content);
+  return clone;
+}
+
+// ---------------------------------------------------------------------------
+// Asset upload (idempotent: get-or-create + process + publish)
+// ---------------------------------------------------------------------------
+
+async function uploadAsset(assetId: string, title: string) {
+  const base = { spaceId: SPACE, environmentId: ENV, assetId };
+  try {
+    await client.asset.get(base);
+    console.log("asset exists", assetId);
+    return;
+  } catch {
+    // not found — create below
+  }
+  const uploadUrl = `https://picsum.photos/seed/${assetId}/1600/1000`;
+  const asset = await client.asset.createWithId(base, {
+    fields: {
+      title: { "en-US": title },
+      file: {
+        "en-US": {
+          contentType: "image/jpeg",
+          fileName: `${assetId}.jpg`,
+          upload: uploadUrl,
+        },
+      },
+    },
+  });
+  const processed = await client.asset.processForAllLocales(base, asset);
+  await client.asset.publish(base, processed);
+  console.log("uploaded asset", assetId);
+}
+
+// ---------------------------------------------------------------------------
+// Entry upsert
+// ---------------------------------------------------------------------------
 
 async function upsert(
   type: string,
@@ -96,6 +167,7 @@ async function main(): Promise<void> {
     "partner",
     "pathStep",
     "interest",
+    "community",
   ];
 
   // Content types must be published before their entries appear in the Delivery API.
@@ -111,6 +183,9 @@ async function main(): Promise<void> {
   }
 
   for (const o of seedOpportunities) {
+    for (const assetId of collectAssetIds(o.longDescription)) {
+      await uploadAsset(assetId, o.title);
+    }
     await upsert("opportunity", o.id, {
       title: { "en-US": o.title },
       slug: { "en-US": o.slug },
@@ -124,6 +199,9 @@ async function main(): Promise<void> {
       tags: { "en-US": o.tags },
       featured: { "en-US": o.featured },
       order: { "en-US": o.order },
+      ...(o.longDescription
+        ? { longDescription: { "en-US": toContentfulBody(o.longDescription) } }
+        : {}),
     });
   }
 
@@ -142,12 +220,16 @@ async function main(): Promise<void> {
   }
 
   for (const g of seedGuides) {
+    for (const assetId of collectAssetIds(g.body)) {
+      await uploadAsset(assetId, g.title);
+    }
     await upsert("guide", g.id, {
       title: { "en-US": g.title },
       slug: { "en-US": g.slug },
       readTime: { "en-US": g.readTime },
       excerpt: { "en-US": g.excerpt },
-      body: { "en-US": richText(g.excerpt || g.title) },
+      body: { "en-US": toContentfulBody(g.body) },
+      ...(g.publishedAt ? { publishedAt: { "en-US": g.publishedAt } } : {}),
     });
   }
 
@@ -177,6 +259,14 @@ async function main(): Promise<void> {
     await upsert("interest", i.id, {
       label: { "en-US": i.label },
       emoji: { "en-US": i.emoji },
+    });
+  }
+
+  for (const c of seedCommunity) {
+    await upsert("community", c.id, {
+      emoji: { "en-US": c.emoji },
+      label: { "en-US": c.label },
+      members: { "en-US": c.members },
     });
   }
 

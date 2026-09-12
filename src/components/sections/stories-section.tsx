@@ -1,4 +1,5 @@
 import { SectionHeading, CardShell } from "@/components/sections/section";
+import { Carousel } from "@/components/carousel";
 import type { StoryData } from "@/types/models";
 
 const avatarColors = [
@@ -27,7 +28,7 @@ export function StoriesSection({ stories }: { stories: StoryData[] }) {
           className="mx-auto max-w-2xl text-center"
         />
 
-        <div className="mt-16 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        <Carousel ariaLabel="Student stories" className="mt-16">
           {stories.map((story, index) => (
             <CardShell key={story.id} variant="story">
               <span
@@ -60,7 +61,7 @@ export function StoriesSection({ stories }: { stories: StoryData[] }) {
               </div>
             </CardShell>
           ))}
-        </div>
+        </Carousel>
 
         <div className="mt-14 text-center">
           <a

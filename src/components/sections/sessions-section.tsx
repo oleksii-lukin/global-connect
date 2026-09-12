@@ -47,13 +47,25 @@ export function SessionsSection({
       </div>
 
       <div className="mt-8 grid gap-6 sm:grid-cols-2">
-        {sessions.map((session, index) => (
+        {sessions.slice(0, 2).map((session, index) => (
           <SessionCard
             key={session.id}
             session={session}
             tileColor={tileColors[index % tileColors.length]}
           />
         ))}
+      </div>
+
+      <div className="mt-10 text-center">
+        <Link
+          href="/sessions"
+          className="group inline-flex items-center gap-2 text-base font-medium text-foreground transition-colors hover:text-accent-foreground"
+        >
+          View all sessions
+          <span className="inline-block transition-transform duration-300 group-hover:translate-x-1">
+            →
+          </span>
+        </Link>
       </div>
     </Section>
   );

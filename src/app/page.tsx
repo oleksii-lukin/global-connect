@@ -3,7 +3,7 @@ import { SiteFooter } from "@/components/site-footer";
 import { Reveal } from "@/components/reveal";
 import { HeroSection } from "@/components/sections/hero-section";
 import { StatsBand } from "@/components/sections/stats-band";
-import { OpportunityFinder } from "@/components/sections/opportunity-finder";
+import { OpportunitiesPreview } from "@/components/sections/opportunities-preview";
 import { PathSection } from "@/components/sections/path-section";
 import { SessionsSection } from "@/components/sections/sessions-section";
 import { GuidesSection } from "@/components/sections/guides-section";
@@ -40,6 +40,9 @@ export default async function HomePage() {
 
   const featured = opportunities.filter((o) => o.featured);
   const heroFeatured = (featured.length >= 3 ? featured : opportunities).slice(0, 3);
+  const previewOpportunities = opportunities
+    .filter((o) => !heroFeatured.some((h) => h.id === o.id))
+    .slice(0, 3);
 
   return (
     <>
@@ -50,7 +53,7 @@ export default async function HomePage() {
           <StatsBand />
         </Reveal>
         <Reveal delay={80}>
-          <OpportunityFinder opportunities={opportunities} />
+          <OpportunitiesPreview opportunities={previewOpportunities} />
         </Reveal>
         <Reveal>
           <PathSection steps={pathSteps} />

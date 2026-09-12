@@ -6,19 +6,46 @@ import { SiteHeader } from "@/components/site-header";
 import { PageHeader } from "@/components/page-header";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-
-const TOPICS = [
-  { emoji: "🌍", label: "Travel & exchanges", members: "1,240 members" },
-  { emoji: "🎓", label: "Studying abroad", members: "980 members" },
-  { emoji: "🎤", label: "Speaking clubs", members: "760 members" },
-  { emoji: "💻", label: "Technology & AI", members: "540 members" },
-];
+import { getCommunityTopics } from "@/lib/contentful/queries";
 
 export const metadata = {
   title: "Community",
   description:
     "Connect with young people around the world. Discussions, speaking clubs, mentorship and learning together.",
 };
+
+async function CommunityTopics() {
+  const topics = await getCommunityTopics();
+  return (
+    <div className="grid gap-6 md:grid-cols-2">
+      {topics.map((topic) => (
+        <Card key={topic.id}>
+          <CardContent className="flex items-center gap-4">
+            <span className="flex size-12 items-center justify-center rounded-2xl bg-lavender/20 text-2xl">
+              {topic.emoji}
+            </span>
+            <div className="flex flex-1 flex-col">
+              <span className="font-medium">{topic.label}</span>
+              <span className="text-sm text-muted-foreground">
+                {topic.members}
+              </span>
+            </div>
+            <Show
+              when="signed-in"
+              fallback={
+                <Button variant="outline" size="sm">
+                  Join to participate
+                </Button>
+              }
+            >
+              <Button size="sm">Open discussion</Button>
+            </Show>
+          </CardContent>
+        </Card>
+      ))}
+    </div>
+  );
+}
 
 export default function CommunityPage() {
   return (
@@ -36,54 +63,21 @@ export default function CommunityPage() {
           <Suspense
             fallback={
               <div className="grid gap-6 md:grid-cols-2">
-                {TOPICS.map((topic) => (
-                  <Card key={topic.label}>
+                {Array.from({ length: 6 }).map((_, i) => (
+                  <Card key={i}>
                     <CardContent className="flex items-center gap-4">
-                      <span className="flex size-12 items-center justify-center rounded-2xl bg-muted text-2xl">
-                        {topic.emoji}
-                      </span>
-                      <div className="flex flex-1 flex-col">
-                        <span className="font-medium">{topic.label}</span>
-                        <span className="text-sm text-muted-foreground">
-                          {topic.members}
-                        </span>
+                      <span className="flex size-12 items-center justify-center rounded-2xl bg-muted text-2xl" />
+                      <div className="flex flex-1 flex-col gap-2">
+                        <span className="h-4 w-32 rounded bg-muted" />
+                        <span className="h-3 w-24 rounded bg-muted" />
                       </div>
-                      <Button variant="outline" size="sm" disabled>
-                        Join to participate
-                      </Button>
                     </CardContent>
                   </Card>
                 ))}
               </div>
             }
           >
-            <div className="grid gap-6 md:grid-cols-2">
-              {TOPICS.map((topic) => (
-                <Card key={topic.label}>
-                  <CardContent className="flex items-center gap-4">
-                    <span className="flex size-12 items-center justify-center rounded-2xl bg-lavender/20 text-2xl">
-                      {topic.emoji}
-                    </span>
-                    <div className="flex flex-1 flex-col">
-                      <span className="font-medium">{topic.label}</span>
-                      <span className="text-sm text-muted-foreground">
-                        {topic.members}
-                      </span>
-                    </div>
-                    <Show
-                      when="signed-in"
-                      fallback={
-                        <Button variant="outline" size="sm">
-                          Join to participate
-                        </Button>
-                      }
-                    >
-                      <Button size="sm">Open discussion</Button>
-                    </Show>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
+            <CommunityTopics />
           </Suspense>
         </div>
       </main>

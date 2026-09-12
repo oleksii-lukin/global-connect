@@ -44,7 +44,7 @@
           "type": "Symbol",
           "localized": false,
           "required": false,
-          "validations": [{ "in": ["Portugal", "Europe", "USA", "Worldwide"] }],
+          "validations": [{ "in": ["Portugal", "Europe", "USA", "Worldwide", "Switzerland", "United Kingdom", "Germany", "Spain", "Poland", "Philippines", "Hungary", "France", "Italy", "Global", "Remote"] }],
           "disabled": false,
           "omitted": false
         },
@@ -72,7 +72,11 @@
                 "Conference",
                 "Programme",
                 "Volunteering",
-                "Online"
+                "Online",
+                "Volunteer",
+                "Internship",
+                "Fellowship",
+                "Grant"
               ]
             }
           ],
@@ -115,7 +119,7 @@
           "type": "Symbol",
           "localized": false,
           "required": false,
-          "validations": [{ "regexp": { "pattern": "^(Fully funded|Free|Scholarship available|Paid)$", "flags": "" } }],
+          "validations": [{ "regexp": { "pattern": "^(Fully funded|Free|Scholarship available|Paid|Partial scholarship|Funded|Unpaid|Grant)$", "flags": "" } }],
           "disabled": false,
           "omitted": false
         },
@@ -225,7 +229,7 @@
           "type": "Symbol",
           "localized": false,
           "required": false,
-          "validations": [{ "regexp": { "pattern": "^\\d{2} min", "flags": "" } }],
+          "validations": [{ "regexp": { "pattern": "^\\d{2,3} min", "flags": "" } }],
           "disabled": false,
           "omitted": false
         },
@@ -509,6 +513,44 @@
           "localized": false,
           "required": false,
           "validations": [{ "regexp": { "pattern": "^.+$", "flags": "" } }],
+          "disabled": false,
+          "omitted": false
+        }
+      ]
+    },
+    {
+      "sys": { "id": "community", "type": "ContentType" },
+      "name": "Community Topic",
+      "description": "A discussion topic shown on the Community page.",
+      "displayField": "label",
+      "fields": [
+        {
+          "id": "emoji",
+          "name": "Emoji",
+          "type": "Symbol",
+          "localized": false,
+          "required": true,
+          "validations": [{ "regexp": { "pattern": "^.+$", "flags": "" } }],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "label",
+          "name": "Label",
+          "type": "Symbol",
+          "localized": false,
+          "required": true,
+          "validations": [],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "members",
+          "name": "Members",
+          "type": "Symbol",
+          "localized": false,
+          "required": false,
+          "validations": [],
           "disabled": false,
           "omitted": false
         }

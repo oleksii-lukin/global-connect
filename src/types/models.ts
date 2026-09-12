@@ -74,6 +74,13 @@ export interface InterestData {
   emoji: string;
 }
 
+export interface CommunityData {
+  id: string;
+  emoji: string;
+  label: string;
+  members: string;
+}
+
 export interface SiteStats {
   members: string;
   opportunitiesShared: string;
