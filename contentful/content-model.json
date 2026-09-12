@@ -1,0 +1,519 @@
+{
+  "locales": [
+    {
+      "name": "English (United States)",
+      "code": "en-US",
+      "default": true,
+      "contentDeliveryApi": true,
+      "contentManagementApi": true,
+      "fallbackCode": null,
+      "optional": false,
+      "sys": { "type": "Locale", "id": "en-US" }
+    }
+  ],
+  "contentTypes": [
+    {
+      "sys": { "id": "opportunity", "type": "ContentType" },
+      "name": "Opportunity",
+      "description": "A study-abroad, exchange, scholarship, conference, or volunteering opportunity for young people.",
+      "displayField": "title",
+      "fields": [
+        {
+          "id": "title",
+          "name": "Title",
+          "type": "Symbol",
+          "localized": false,
+          "required": true,
+          "validations": [],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "slug",
+          "name": "Slug",
+          "type": "Symbol",
+          "localized": false,
+          "required": true,
+          "validations": [{ "unique": true }],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "country",
+          "name": "Country",
+          "type": "Symbol",
+          "localized": false,
+          "required": false,
+          "validations": [{ "in": ["Portugal", "Europe", "USA", "Worldwide"] }],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "countryFlag",
+          "name": "Country flag",
+          "type": "Symbol",
+          "localized": false,
+          "required": false,
+          "validations": [{ "regexp": { "pattern": "^.+$", "flags": "" } }],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "type",
+          "name": "Type",
+          "type": "Symbol",
+          "localized": false,
+          "required": false,
+          "validations": [
+            {
+              "in": [
+                "Exchange",
+                "Scholarship",
+                "Conference",
+                "Programme",
+                "Volunteering",
+                "Online"
+              ]
+            }
+          ],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "description",
+          "name": "Short description",
+          "type": "Text",
+          "localized": false,
+          "required": true,
+          "validations": [],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "longDescription",
+          "name": "Long description",
+          "type": "RichText",
+          "localized": false,
+          "required": false,
+          "validations": [],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "ageRange",
+          "name": "Age range",
+          "type": "Symbol",
+          "localized": false,
+          "required": false,
+          "validations": [{ "regexp": { "pattern": "^Ages \\d{2}–\\d{2}$", "flags": "" } }],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "funding",
+          "name": "Funding",
+          "type": "Symbol",
+          "localized": false,
+          "required": false,
+          "validations": [{ "regexp": { "pattern": "^(Fully funded|Free|Scholarship available|Paid)$", "flags": "" } }],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "deadline",
+          "name": "Deadline",
+          "type": "Symbol",
+          "localized": false,
+          "required": false,
+          "validations": [{ "regexp": { "pattern": "^[A-Z][a-z]+ \\d{1,2}|Rolling$", "flags": "" } }],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "tags",
+          "name": "Tags",
+          "type": "Array",
+          "localized": false,
+          "required": false,
+          "validations": [],
+          "disabled": false,
+          "omitted": false,
+          "items": { "type": "Symbol", "validations": [] }
+        },
+        {
+          "id": "image",
+          "name": "Image",
+          "type": "Link",
+          "linkType": "Asset",
+          "localized": false,
+          "required": false,
+          "validations": [],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "featured",
+          "name": "Featured",
+          "type": "Boolean",
+          "localized": false,
+          "required": false,
+          "validations": [],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "order",
+          "name": "Order",
+          "type": "Integer",
+          "localized": false,
+          "required": false,
+          "validations": [],
+          "disabled": false,
+          "omitted": false
+        }
+      ]
+    },
+    {
+      "sys": { "id": "session", "type": "ContentType" },
+      "name": "Online Session",
+      "description": "An online session, workshop, speaking club, or programme.",
+      "displayField": "title",
+      "fields": [
+        {
+          "id": "title",
+          "name": "Title",
+          "type": "Symbol",
+          "localized": false,
+          "required": true,
+          "validations": [],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "slug",
+          "name": "Slug",
+          "type": "Symbol",
+          "localized": false,
+          "required": true,
+          "validations": [{ "unique": true }],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "icon",
+          "name": "Icon (emoji)",
+          "type": "Symbol",
+          "localized": false,
+          "required": false,
+          "validations": [{ "regexp": { "pattern": "^.+$", "flags": "" } }],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "description",
+          "name": "Description",
+          "type": "Text",
+          "localized": false,
+          "required": true,
+          "validations": [],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "duration",
+          "name": "Duration",
+          "type": "Symbol",
+          "localized": false,
+          "required": false,
+          "validations": [{ "regexp": { "pattern": "^\\d{2} min", "flags": "" } }],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "difficulty",
+          "name": "Difficulty",
+          "type": "Symbol",
+          "localized": false,
+          "required": false,
+          "validations": [
+            { "in": ["All levels", "Beginner", "Intermediate", "Advanced"] }
+          ],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "online",
+          "name": "Online",
+          "type": "Boolean",
+          "localized": false,
+          "required": false,
+          "validations": [],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "registerUrl",
+          "name": "Registration URL",
+          "type": "Symbol",
+          "localized": false,
+          "required": false,
+          "validations": [{ "regexp": { "pattern": "^https://", "flags": "" } }],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "upcoming",
+          "name": "Upcoming",
+          "type": "Boolean",
+          "localized": false,
+          "required": false,
+          "validations": [],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "order",
+          "name": "Order",
+          "type": "Integer",
+          "localized": false,
+          "required": false,
+          "validations": [],
+          "disabled": false,
+          "omitted": false
+        }
+      ]
+    },
+    {
+      "sys": { "id": "guide", "type": "ContentType" },
+      "name": "Guide",
+      "description": "A practical how-to article that helps young people apply or prepare.",
+      "displayField": "title",
+      "fields": [
+        {
+          "id": "title",
+          "name": "Title",
+          "type": "Symbol",
+          "localized": false,
+          "required": true,
+          "validations": [],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "slug",
+          "name": "Slug",
+          "type": "Symbol",
+          "localized": false,
+          "required": true,
+          "validations": [{ "unique": true }],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "readTime",
+          "name": "Read time (minutes)",
+          "type": "Integer",
+          "localized": false,
+          "required": false,
+          "validations": [{ "range": { "min": 1, "max": 60 } }],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "excerpt",
+          "name": "Excerpt",
+          "type": "Text",
+          "localized": false,
+          "required": false,
+          "validations": [],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "body",
+          "name": "Body",
+          "type": "RichText",
+          "localized": false,
+          "required": true,
+          "validations": [],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "publishedAt",
+          "name": "Published at",
+          "type": "Date",
+          "localized": false,
+          "required": false,
+          "validations": [],
+          "disabled": false,
+          "omitted": false
+        }
+      ]
+    },
+    {
+      "sys": { "id": "story", "type": "ContentType" },
+      "name": "Student Story",
+      "description": "A testimonial from a Global Connect member.",
+      "displayField": "name",
+      "fields": [
+        {
+          "id": "quote",
+          "name": "Quote",
+          "type": "Text",
+          "localized": false,
+          "required": true,
+          "validations": [],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "name",
+          "name": "Name",
+          "type": "Symbol",
+          "localized": false,
+          "required": true,
+          "validations": [],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "location",
+          "name": "Location",
+          "type": "Symbol",
+          "localized": false,
+          "required": false,
+          "validations": [],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "role",
+          "name": "Role",
+          "type": "Symbol",
+          "localized": false,
+          "required": false,
+          "validations": [],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "approved",
+          "name": "Approved",
+          "type": "Boolean",
+          "localized": false,
+          "required": false,
+          "validations": [],
+          "disabled": false,
+          "omitted": false
+        }
+      ]
+    },
+    {
+      "sys": { "id": "partner", "type": "ContentType" },
+      "name": "Partner",
+      "description": "An organisation that partners with Global Connect.",
+      "displayField": "name",
+      "fields": [
+        {
+          "id": "name",
+          "name": "Name",
+          "type": "Symbol",
+          "localized": false,
+          "required": true,
+          "validations": [],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "logo",
+          "name": "Logo",
+          "type": "Link",
+          "linkType": "Asset",
+          "localized": false,
+          "required": false,
+          "validations": [],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "website",
+          "name": "Website",
+          "type": "Symbol",
+          "localized": false,
+          "required": false,
+          "validations": [{ "regexp": { "pattern": "^https://", "flags": "" } }],
+          "disabled": false,
+          "omitted": false
+        }
+      ]
+    },
+    {
+      "sys": { "id": "pathStep", "type": "ContentType" },
+      "name": "Path Step",
+      "description": "One step in the 'How Global Connect works' path.",
+      "displayField": "title",
+      "fields": [
+        {
+          "id": "stepNumber",
+          "name": "Step number",
+          "type": "Integer",
+          "localized": false,
+          "required": true,
+          "validations": [{ "range": { "min": 1, "max": 10 } }],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "title",
+          "name": "Title",
+          "type": "Symbol",
+          "localized": false,
+          "required": true,
+          "validations": [],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "description",
+          "name": "Description",
+          "type": "Text",
+          "localized": false,
+          "required": false,
+          "validations": [],
+          "disabled": false,
+          "omitted": false
+        }
+      ]
+    },
+    {
+      "sys": { "id": "interest", "type": "ContentType" },
+      "name": "Interest",
+      "description": "A topic chip shown under 'Personalised discovery'.",
+      "displayField": "label",
+      "fields": [
+        {
+          "id": "label",
+          "name": "Label",
+          "type": "Symbol",
+          "localized": false,
+          "required": true,
+          "validations": [],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "emoji",
+          "name": "Emoji",
+          "type": "Symbol",
+          "localized": false,
+          "required": false,
+          "validations": [{ "regexp": { "pattern": "^.+$", "flags": "" } }],
+          "disabled": false,
+          "omitted": false
+        }
+      ]
+    }
+  ],
+  "editorInterfaces": []
+}
