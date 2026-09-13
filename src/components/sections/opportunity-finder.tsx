@@ -13,13 +13,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import Link from "next/link";
 import { Section, SectionHeading } from "@/components/sections/section";
 import type { OpportunityData } from "@/types/models";
 
 export function OpportunityFinder({
   opportunities,
+  limit,
 }: {
   opportunities: OpportunityData[];
+  limit?: number;
 }) {
   const [search, setSearch] = useState("");
   const [country, setCountry] = useState("all");
@@ -152,15 +155,32 @@ export function OpportunityFinder({
       </div>
 
       {filtered.length > 0 ? (
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {filtered.map((opportunity, index) => (
-            <OpportunityCard
-              key={opportunity.id}
-              opportunity={opportunity}
-              index={index}
-            />
-          ))}
-        </div>
+        <>
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {(limit ? filtered.slice(0, limit) : filtered).map(
+              (opportunity, index) => (
+                <OpportunityCard
+                  key={opportunity.id}
+                  opportunity={opportunity}
+                  index={index}
+                />
+              ),
+            )}
+          </div>
+          {limit && filtered.length > limit && (
+            <div className="mt-10 text-center">
+              <Link
+                href="/opportunities"
+                className="group inline-flex items-center gap-2 text-base font-medium text-foreground transition-colors hover:text-accent-foreground"
+              >
+                View all opportunities
+                <span className="inline-block transition-transform duration-300 group-hover:translate-x-1">
+                  →
+                </span>
+              </Link>
+            </div>
+          )}
+        </>
       ) : (
         <div className="mx-auto max-w-md rounded-3xl border border-border bg-card/80 p-10 text-center">
           <p className="font-display text-xl">No opportunities match</p>
