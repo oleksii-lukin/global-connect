@@ -66,7 +66,7 @@ A **content type** is like a database table (e.g. `Opportunity`), a **field** is
 column (e.g. `funding`), and an **entry** is a row (a specific opportunity).
 
 The model for this site lives in [`content-model.json`](./content-model.json). It
-defines 7 content types:
+defines 8 content types:
 
 | Content type | Purpose |
 | --- | --- |
@@ -77,6 +77,7 @@ defines 7 content types:
 | `Partner` | organisations in the "Built with people who believe…" row |
 | `Path Step` | the 5-step "How Global Connect works" section |
 | `Interest` | the "Personalised discovery" topic chips |
+| `Community Topic` | discussion topics shown on the Community page |
 
 ### Option A — Import with the CLI (recommended, ~1 minute)
 
@@ -119,29 +120,66 @@ want on a first setup. If the CLI prompts about the environment, answer `master`
    - `Link` with `"linkType": "Entry"` → **Reference → one entry**
    - `Link` with `"linkType": "Asset"` → **Media → one file**
 
-## 5. Enter content (entries)
+## 5. Seed content (entries + assets)
 
-Now add rows. Content → Content model → pick a type → *Add entry* (or use the
+The fastest way to populate your space is to run the seed script, which
+upserts every entry and uploads opportunity images automatically:
+
+```bash
+pnpm contentful:seed
+```
+
+This reads the seed arrays in `src/lib/contentful/seed.ts`, uploads images
+to Contentful as assets, and creates or updates every entry. It is
+**idempotent** — safe to re-run after adding new content to the seed file.
+
+What gets seeded:
+
+- 18 **Opportunity** entries (with full rich-text long descriptions + images)
+- 14 **Online Session** entries (mix of upcoming and past, some with register URLs)
+- 6 **Guide** entries (rich-text bodies with embedded images)
+- 10 **Student Story** entries
+- 6 **Partner** entries
+- 5 **Path Step** entries (Discover, Understand, Prepare, Apply, Grow)
+- 8 **Interest** entries
+- 10 **Community Topic** entries (discussion topics for the Community page)
+
+### Adding or modifying seed data
+
+All seed data lives in `src/lib/contentful/seed.ts`. Each content type has its
+own exported array (`seedOpportunities`, `seedSessions`, etc.) matching the
+TypeScript interfaces in `src/types/models.ts`.
+
+**Adding an entry** — append an object to the relevant array. The `id` field
+must be unique (convention: `seed-{type}-{slug}`). Then re-run:
+
+```bash
+pnpm contentful:seed
+```
+
+**Adding embedded images** (guides, opportunity long descriptions) — use the
+`guideImage(slug, alt)` helper inside a `doc()` body. This builds an inline
+asset with ID `asset-{slug}`. Two things must exist for it to render:
+
+| Mode | What's needed |
+| --- | --- |
+| **Contentful** (CMS) | The seed script auto-uploads the image as a Contentful asset via `scripts/contentful-seed.ts` using `https://picsum.photos/seed/asset-{slug}/1600/1000`. No manual upload needed — just re-run `pnpm contentful:seed`. |
+| **Fallback** (no CMS) | A local file at `public/guides/asset-{slug}.jpg`. Download one: `curl -fsSL "https://picsum.photos/seed/asset-{slug}/1600/1000" -o public/guides/asset-{slug}.jpg` |
+
+**Content model changes** — if you add a new content type or field, update
+`content/content-model.json`, then re-run `pnpm contentful:import` before
+`pnpm contentful:seed`.
+
+**Field validations** — Contentful enforces `in` lists and regex patterns
+defined in the content model. If your new data uses values not in the current
+lists (e.g. a new country or funding type), update the validation in
+`content-model.json` first and re-import.
+
+### Option B — Enter content manually in the dashboard
+
+Content → Content model → pick a type → *Add entry* (or use the
 *Content* tab). Publish each entry when done (**Publish** button, top right) —
 the app reads *published* content via the Delivery API.
-
-A sensible first batch (mirrors the reference site):
-
-- 3–6 **Opportunity** entries (e.g. Erasmus+ Youth Exchange, Portugal 🇵🇹,
-  Fully funded, Ages 16–20, deadline "September 12", tags `Exchange`, `Travel`,
-  `Erasmus+`).
-- 4 **Online Session** entries (English Speaking Club, Technology & AI Workshop,
-  Entrepreneurship Session, International Opportunities Workshop).
-- 6 **Guide** entries (motivation letter, scholarships, Erasmus+, interview, CV,
-  international programmes) with the `readTime` minutes and a rich-text `body`.
-- 3 **Student Story** entries (Lera, Maxim, Alice).
-- 6 **Partner** entries (Lyceum №14, Youth Bridge NGO, …).
-- 5 **Path Step** entries (Discover, Understand, Prepare, Apply, Grow) numbered
-  1–5.
-- 8 **Interest** entries (Studying abroad, Travel & exchanges, Technology, …).
-
-Upload a few **assets** (Media tab) for Opportunity images and Partner logos,
-then reference them from the corresponding entries.
 
 ## 6. Generate TypeScript types (optional but recommended)
 
@@ -192,3 +230,49 @@ immediately in **Preview mode** (set `CONTENTFUL_PREVIEW_ACTIVE=true` locally).
 - **Content not appearing**: check the entries are **published** (Delivery API
   only sees published content).
 - **Stale content**: wait out the cache window, or hit the revalidate route.
+
+## Migration / Export
+
+### Migrating to a new Contentful space (recommended: re-seed)
+
+The seed script is your portable "export". Moving to a new instance is two
+commands:
+
+```bash
+# set new space env vars in .env.local, then
+pnpm contentful:import   # creates content types
+pnpm contentful:seed     # creates entries + uploads images
+```
+
+This recreates everything — content types, entries, assets — from
+`src/lib/contentful/seed.ts` and `content/content-model.json`. Images are
+re-uploaded from picsum, so no manual download is needed.
+
+### Exporting from Contentful directly
+
+The Contentful CLI can export a space to JSON:
+
+```bash
+contentful space export --space-id <id> --environment master --content-file ./export.json
+```
+
+This exports content types, entries, asset metadata, locales and roles — but
+**not the actual image files**. Asset binaries are referenced by CDN URL only.
+
+For a full migration including images you would need to:
+
+1. Export the space → JSON.
+2. Download images from the asset URLs in the export.
+3. Import into the target space → `contentful space import --space-id <new-id> --content-file export.json`
+
+> If the source space is still accessible during import, Contentful re-uploads
+> assets from the original URLs automatically. If you are deleting the source
+> space, download the images first.
+
+### Other migration options
+
+| Method | Includes images? | Notes |
+| --- | --- | --- |
+| `pnpm contentful:seed` | Yes (via picsum) | Recommended for this project — fully self-contained |
+| `contentful space export` | No (metadata only) | Good for schema + content between live spaces |
+| Dashboard "Copy space" | Yes | Space duplication (paid plans only, if available) |

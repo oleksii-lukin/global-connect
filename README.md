@@ -26,6 +26,8 @@ Open http://localhost:3000.
 
 > The site ships with built-in sample content so it renders before you connect
 > Contentful. Once your CMS is wired up, real entries replace it automatically.
+> To populate your CMS, run `pnpm contentful:import` then `pnpm contentful:seed`
+> (see [`contentful/README.md`](./contentful/README.md) for full details).
 
 ## Environment variables
 
@@ -47,6 +49,7 @@ pnpm lint              # eslint
 pnpm typecheck         # tsc --noEmit
 pnpm react-doctor      # scan the codebase for React issues (0-100 score)
 pnpm contentful:import # import the content model into your space (see contentful/README.md)
+pnpm contentful:seed   # seed entries + assets into Contentful (see contentful/README.md)
 pnpm contentful:codegen# generate TS types from your Contentful content model
 ```
 
@@ -60,7 +63,7 @@ src/
     sections/             # homepage section components
     ui/                   # shadcn/ui primitives
   lib/
-    contentful/           # client.ts, queries.ts (cached fetchers), seed.ts (fallback content)
+    contentful/           # client.ts, queries.ts (cached fetchers), seed.ts (fallback + CMS seed data)
     richtext.tsx          # Contentful rich-text → React
   types/                  # hand-written models (models.ts) + Contentful skeleton types (contentful.ts)
 contentful/               # content-model.json + setup guide
