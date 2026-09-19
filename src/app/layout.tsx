@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Fraunces, Inter } from "next/font/google";
 import "./globals.css";
@@ -22,6 +22,12 @@ export const metadata: Metadata = {
   },
   description:
     "Discover international opportunities, online sessions, guides and a global youth community. Exchanges, scholarships, conferences and volunteering for young people.",
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#ffffff",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

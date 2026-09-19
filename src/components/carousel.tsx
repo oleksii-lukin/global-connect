@@ -89,10 +89,10 @@ export function Carousel({
               aria-label={`Go to slide group ${i + 1}`}
               onClick={() => emblaApi?.scrollTo(i)}
               className={cn(
-                "h-2 rounded-full transition-all",
+                "rounded-full transition-all",
                 i === selectedIndex
-                  ? "w-6 bg-foreground"
-                  : "w-2 bg-border hover:bg-muted-foreground",
+                  ? "h-2.5 w-6 bg-foreground"
+                  : "h-2.5 w-2.5 bg-border hover:bg-muted-foreground",
               )}
             />
           ))}

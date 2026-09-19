@@ -78,10 +78,10 @@ export function CommunitySection({
               {AVATARS.map((a) => (
                 <div
                   key={a.initials}
-                  className={`flex flex-col items-center justify-center rounded-2xl border border-border bg-card/70 p-3 text-center transition-transform duration-300 hover:-translate-y-1 ${a.lift ? "translate-y-3" : ""}`}
+                  className={`flex flex-col items-center justify-center rounded-2xl border border-border bg-card/70 p-2.5 text-center transition-transform duration-300 hover:-translate-y-1 ${a.lift ? "translate-y-3" : ""}`}
                 >
                   <span
-                    className={`flex h-12 w-12 items-center justify-center rounded-full font-display text-sm text-foreground ${a.bg}`}
+                    className={`flex h-11 w-11 items-center justify-center rounded-full font-display text-sm text-foreground ${a.bg}`}
                   >
                     {a.initials}
                   </span>

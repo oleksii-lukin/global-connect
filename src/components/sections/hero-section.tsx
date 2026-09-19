@@ -17,6 +17,9 @@ export function HeroSection({
   config?: HomepageSectionData;
 }) {
   const chips = featured.slice(0, 3);
+  const titleWords = config?.title?.trim().split(/\s+/);
+  const titleHighlight = titleWords?.slice(-2).join(" ");
+  const titleRest = titleWords?.slice(0, -2).join(" ");
 
   return (
     <section
@@ -33,11 +36,11 @@ export function HeroSection({
         <div>
           {config?.eyebrow && <SectionEyebrow dot="sage">{config.eyebrow}</SectionEyebrow>}
 
-          {config?.title && (
-            <h1 className="mt-7 font-display text-[2.6rem] leading-[1.05] tracking-tight text-foreground sm:text-6xl">
-              {config.title.replace(/\s+\S+\s*$/, "")}{" "}
-              <span className="relative inline-block">
-                {config.title.split(/\s+/).slice(-2).join(" ")}
+          {titleRest && titleHighlight && (
+            <h1 className="mt-7 font-display text-[2.6rem] leading-[1.05] tracking-tight text-foreground sm:text-6xl text-balance">
+              {titleRest}{" "}
+              <span className="relative inline-block break-words">
+                {titleHighlight}
                 <span
                   className="absolute inset-x-0 bottom-1 -z-10 h-3 rounded-full bg-peach/40"
                   aria-hidden="true"
@@ -53,12 +56,12 @@ export function HeroSection({
           )}
 
           <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-            <Button render={<a href="#opportunities" />}>
+            <Button className="w-full sm:w-auto" render={<a href="#opportunities" />}>
               Explore opportunities <span aria-hidden="true">→</span>
             </Button>
             <Suspense
               fallback={
-                <Button variant="outline" disabled>
+                <Button className="w-full sm:w-auto" variant="outline" disabled>
                   Join Global Connect
                 </Button>
               }
@@ -67,6 +70,7 @@ export function HeroSection({
                 when="signed-out"
                 fallback={
                   <Button
+                    className="w-full sm:w-auto"
                     variant="outline"
                     render={<a href="/community" />}
                   >
@@ -75,7 +79,7 @@ export function HeroSection({
                 }
               >
                 <SignInButton mode="modal">
-                  <Button variant="outline">Join Global Connect</Button>
+                  <Button className="w-full sm:w-auto" variant="outline">Join Global Connect</Button>
                 </SignInButton>
               </Show>
             </Suspense>
@@ -98,6 +102,8 @@ export function HeroSection({
                 alt={config.imageAlt ?? "Young people from different countries laughing together on a campus"}
                 width={1024}
                 height={1280}
+                priority
+                sizes="(min-width: 1024px) 50vw, 100vw"
                 className="h-[26rem] w-full object-cover sm:h-[34rem]"
               />
             )}

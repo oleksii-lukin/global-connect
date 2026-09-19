@@ -102,7 +102,7 @@ function SessionCard({
         {session.description}
       </p>
       <div className="mt-6 flex items-center justify-between gap-4 border-t border-border/70 pt-5">
-        <p className="text-xs uppercase tracking-[0.16em] text-muted-foreground">
+        <p className="min-w-0 truncate text-xs uppercase tracking-[0.16em] text-muted-foreground">
           {session.duration} · {session.difficulty}
         </p>
         {session.registerUrl ? (

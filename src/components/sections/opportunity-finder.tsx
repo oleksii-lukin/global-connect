@@ -219,11 +219,11 @@ function FilterSelect({
     >
       <SelectTrigger
         aria-label={label}
-        className="h-auto w-fit shrink-0 gap-1 rounded-full border border-border bg-card/60 px-4 py-2 text-sm text-muted-foreground transition-colors hover:border-foreground/25 hover:text-foreground"
+        className="h-auto w-fit shrink-0 gap-1 rounded-full border border-border bg-card/60 px-4 py-2.5 text-sm text-muted-foreground transition-colors hover:border-foreground/25 hover:text-foreground"
       >
         <SelectValue placeholder={label} />
       </SelectTrigger>
-      <SelectContent>
+      <SelectContent className="min-w-48">
         {options.map((option) => (
           <SelectItem key={option} value={option}>
             {option}

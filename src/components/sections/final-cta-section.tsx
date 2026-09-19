@@ -36,6 +36,7 @@ export function FinalCtaSection({
         )}
         <div className="mt-10 flex flex-col justify-center gap-3 sm:flex-row">
           <Button
+            className="w-full sm:w-auto"
             size="lg"
             variant="default"
             render={<a href="#opportunities" />}
@@ -44,7 +45,7 @@ export function FinalCtaSection({
           </Button>
           <Suspense
             fallback={
-              <Button size="lg" variant="outline" disabled>
+              <Button className="w-full sm:w-auto" size="lg" variant="outline" disabled>
                 Join Global Connect
               </Button>
             }
@@ -53,6 +54,7 @@ export function FinalCtaSection({
               when="signed-out"
               fallback={
                 <Button
+                  className="w-full sm:w-auto"
                   size="lg"
                   variant="outline"
                   render={<a href="/community" />}
@@ -62,7 +64,7 @@ export function FinalCtaSection({
               }
             >
               <SignInButton mode="modal">
-                <Button size="lg" variant="outline">
+                <Button className="w-full sm:w-auto" size="lg" variant="outline">
                   Join Global Connect
                 </Button>
               </SignInButton>
