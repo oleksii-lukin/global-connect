@@ -81,6 +81,13 @@ export interface CommunityData {
   members: string;
 }
 
+export interface CityData {
+  id: string;
+  initials: string;
+  city: string;
+  order: number;
+}
+
 export type HomepageSectionKey =
   | "hero"
   | "stats"

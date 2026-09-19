@@ -3,6 +3,8 @@ import { cacheLife, cacheTag } from "next/cache";
 import type { Asset, UnresolvedLink } from "contentful";
 import { getContentfulClient } from "./client";
 import type {
+  City,
+  CitySkeleton,
   Community,
   CommunitySkeleton,
   Guide,
@@ -23,6 +25,7 @@ import type {
   StorySkeleton,
 } from "@/types/contentful";
 import type {
+  CityData,
   CommunityData,
   GuideData,
   HomepageSectionData,
@@ -153,6 +156,16 @@ function mapCommunity(entry: Community): CommunityData {
     emoji: fields.emoji ?? "✨",
     label: fields.label,
     members: fields.members ?? "",
+  };
+}
+
+function mapCity(entry: City): CityData {
+  const fields = entry.fields;
+  return {
+    id: entry.sys.id,
+    initials: fields.initials,
+    city: fields.city,
+    order: fields.order ?? Number.MAX_SAFE_INTEGER,
   };
 }
 
@@ -300,6 +313,19 @@ export async function getCommunityTopics(): Promise<CommunityData[]> {
     limit: 100,
   });
   return r.items.map(mapCommunity);
+}
+
+export async function getCities(): Promise<CityData[]> {
+  "use cache";
+  cacheLife("cms");
+  cacheTag("contentful");
+
+  const client = getContentfulClient();
+  const r = await client.getEntries<CitySkeleton>({
+    content_type: "city",
+    limit: 100,
+  });
+  return sortByOrder(r.items.map(mapCity));
 }
 
 export async function getHomepageSections(): Promise<

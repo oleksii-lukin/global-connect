@@ -107,6 +107,17 @@ export type PathStep = Entry<PathStepSkeleton, undefined, "en-US">;
 export type Interest = Entry<InterestSkeleton, undefined, "en-US">;
 export type Community = Entry<CommunitySkeleton, undefined, "en-US">;
 
+export type CitySkeleton = EntrySkeletonType<
+  {
+    initials: EntryFieldTypes.Symbol<string>;
+    city: EntryFieldTypes.Symbol<string>;
+    order?: EntryFieldTypes.Integer<number>;
+  },
+  "city"
+>;
+
+export type City = Entry<CitySkeleton, undefined, "en-US">;
+
 export type HomepageSectionSkeleton = EntrySkeletonType<
   {
     section: EntryFieldTypes.Symbol<string>;

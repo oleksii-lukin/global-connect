@@ -70,7 +70,7 @@ A **content type** is like a database table (e.g. `Opportunity`), a **field** is
 column (e.g. `funding`), and an **entry** is a row (a specific opportunity).
 
 The model for this site lives in [`content-model.json`](./content-model.json). It
-defines 9 content types:
+defines 10 content types:
 
 | Content type | Purpose |
 | --- | --- |
@@ -82,6 +82,7 @@ defines 9 content types:
 | `Path Step` | the 5-step "How Global Connect works" section |
 | `Interest` | the "Personalised discovery" topic chips |
 | `Community Topic` | discussion topics shown on the Community page |
+| `City` | initials + city name shown in the community avatar grid |
 | `Homepage Section` | heading, description and image for each homepage section |
 
 ### Option A — Import with the CLI (recommended, ~1 minute)
@@ -148,13 +149,14 @@ What gets seeded:
 - 5 **Path Step** entries (Discover, Understand, Prepare, Apply, Grow)
 - 8 **Interest** entries
 - 10 **Community Topic** entries (discussion topics for the Community page)
+- 8 **City** entries (initials + city name for the community avatar grid)
 - 11 **Homepage Section** entries (configures the heading, description and image of each homepage section)
 
 ### Adding or modifying seed data
 
 All seed data lives in `src/lib/contentful/seed.ts`. Each content type has its
-own exported array (`seedOpportunities`, `seedSessions`, etc.) matching the
-TypeScript interfaces in `src/types/models.ts`.
+own exported array (`seedOpportunities`, `seedSessions`, `seedCities`, etc.)
+matching the TypeScript interfaces in `src/types/models.ts`.
 
 **Adding an entry** — append an object to the relevant array. The `id` field
 must be unique (convention: `seed-{type}-{slug}`). Then re-run:

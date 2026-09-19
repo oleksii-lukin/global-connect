@@ -6,6 +6,7 @@ import path from "node:path";
 import { BLOCKS } from "@contentful/rich-text-types";
 import type { Document } from "@contentful/rich-text-types";
 import {
+  seedCities,
   seedCommunity,
   seedHomepageSections,
   seedInterests,
@@ -213,6 +214,7 @@ async function main(): Promise<void> {
     "pathStep",
     "interest",
     "community",
+    "city",
     "homepageSection",
   ];
 
@@ -313,6 +315,14 @@ async function main(): Promise<void> {
       emoji: { "en-US": c.emoji },
       label: { "en-US": c.label },
       members: { "en-US": c.members },
+    });
+  }
+
+  for (const c of seedCities) {
+    await upsert("city", c.id, {
+      initials: { "en-US": c.initials },
+      city: { "en-US": c.city },
+      order: { "en-US": c.order },
     });
   }
 

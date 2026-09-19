@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { SectionHeading } from "@/components/sections/section";
-import type { HomepageSectionData } from "@/types/models";
+import type { CityData, HomepageSectionData } from "@/types/models";
 
 const FEATURES = [
   { icon: "🌍", text: "Meet young people worldwide" },
@@ -12,21 +12,25 @@ const FEATURES = [
   { icon: "📚", text: "Learn together" },
 ];
 
-const AVATARS = [
-  { initials: "LR", city: "Kyiv", bg: "bg-lavender/30" },
-  { initials: "MK", city: "Lisbon", bg: "bg-pastel-blue/30", lift: true },
-  { initials: "AS", city: "Warsaw", bg: "bg-sage/30" },
-  { initials: "TN", city: "Nairobi", bg: "bg-peach/35" },
-  { initials: "JD", city: "Berlin", bg: "bg-blush/35", lift: true },
-  { initials: "YB", city: "Istanbul", bg: "bg-lavender/20" },
-  { initials: "SC", city: "Manila", bg: "bg-pastel-blue/20", lift: true },
-  { initials: "EM", city: "Madrid", bg: "bg-sage/20" },
+const CITY_STYLES: { bg: string; lift?: boolean }[] = [
+  { bg: "bg-lavender/30" },
+  { bg: "bg-pastel-blue/30", lift: true },
+  { bg: "bg-sage/30" },
+  { bg: "bg-peach/35" },
+  { bg: "bg-blush/35", lift: true },
+  { bg: "bg-lavender/20" },
+  { bg: "bg-pastel-blue/20", lift: true },
+  { bg: "bg-sage/20" },
 ];
+
+const DEFAULT_CITY_BG = "bg-muted/30";
 
 export function CommunitySection({
   config,
+  cities,
 }: {
   config?: HomepageSectionData;
+  cities?: CityData[];
 }) {
   return (
     <section id="community" className="px-6 py-24 sm:py-32">
@@ -76,21 +80,26 @@ export function CommunitySection({
               )}
             </div>
             <div className="mt-5 grid grid-cols-4 gap-3 sm:gap-4">
-              {AVATARS.map((a) => (
-                <div
-                  key={a.initials}
-                  className={`flex flex-col items-center justify-center rounded-2xl border border-border bg-card/70 p-2.5 text-center transition-transform duration-300 hover:-translate-y-1 ${a.lift ? "translate-y-3" : ""}`}
-                >
-                  <span
-                    className={`flex h-11 w-11 items-center justify-center rounded-full font-display text-sm text-foreground ${a.bg}`}
+              {(cities ?? []).map((c, i) => {
+                const pres = CITY_STYLES[i % CITY_STYLES.length] ?? {
+                  bg: DEFAULT_CITY_BG,
+                };
+                return (
+                  <div
+                    key={c.initials}
+                    className={`flex flex-col items-center justify-center rounded-2xl border border-border bg-card/70 p-2.5 text-center transition-transform duration-300 hover:-translate-y-1 ${pres.lift ? "translate-y-3" : ""}`}
                   >
-                    {a.initials}
-                  </span>
-                  <span className="mt-2 text-[0.7rem] text-muted-foreground">
-                    {a.city}
-                  </span>
-                </div>
-              ))}
+                    <span
+                      className={`flex h-11 w-11 items-center justify-center rounded-full font-display text-sm text-foreground ${pres.bg}`}
+                    >
+                      {c.initials}
+                    </span>
+                    <span className="mt-2 text-[0.7rem] text-muted-foreground">
+                      {c.city}
+                    </span>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </div>

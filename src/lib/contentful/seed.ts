@@ -1,4 +1,5 @@
 import type {
+  CityData,
   CommunityData,
   HomepageSectionData,
   HomepageSectionKey,
@@ -1391,6 +1392,21 @@ export const seedCommunity: CommunityData[] = [
   { id: "seed-community-research", emoji: "🧠", label: "Research", members: "290 members" },
   { id: "seed-community-competitions", emoji: "🏆", label: "Competitions", members: "510 members" },
   { id: "seed-community-climate", emoji: "🌱", label: "Climate & Sustainability", members: "370 members" },
+];
+
+// ---------------------------------------------------------------------------
+// Cities (community avatar grid on the homepage)
+// ---------------------------------------------------------------------------
+
+export const seedCities: CityData[] = [
+  { id: "seed-city-kyiv", initials: "LR", city: "Kyiv", order: 1 },
+  { id: "seed-city-lisbon", initials: "MK", city: "Lisbon", order: 2 },
+  { id: "seed-city-warsaw", initials: "AS", city: "Warsaw", order: 3 },
+  { id: "seed-city-nairobi", initials: "TN", city: "Nairobi", order: 4 },
+  { id: "seed-city-berlin", initials: "JD", city: "Berlin", order: 5 },
+  { id: "seed-city-istanbul", initials: "YB", city: "Istanbul", order: 6 },
+  { id: "seed-city-manila", initials: "SC", city: "Manila", order: 7 },
+  { id: "seed-city-madrid", initials: "EM", city: "Madrid", order: 8 },
 ];
 
 // ---------------------------------------------------------------------------

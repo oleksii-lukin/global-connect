@@ -557,6 +557,44 @@
       ]
     },
     {
+      "sys": { "id": "city", "type": "ContentType" },
+      "name": "City",
+      "description": "A city shown in the community avatar grid on the homepage.",
+      "displayField": "city",
+      "fields": [
+        {
+          "id": "initials",
+          "name": "Initials",
+          "type": "Symbol",
+          "localized": false,
+          "required": true,
+          "validations": [{ "unique": true }],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "city",
+          "name": "City",
+          "type": "Symbol",
+          "localized": false,
+          "required": true,
+          "validations": [],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "order",
+          "name": "Order",
+          "type": "Integer",
+          "localized": false,
+          "required": false,
+          "validations": [],
+          "disabled": false,
+          "omitted": false
+        }
+      ]
+    },
+    {
       "sys": { "id": "homepageSection", "type": "ContentType" },
       "name": "Homepage Section",
       "description": "Configures the heading, description and image of a homepage section.",

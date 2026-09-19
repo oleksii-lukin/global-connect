@@ -13,6 +13,7 @@ import { DiscoverySection } from "@/components/sections/discovery-section";
 import { PartnersSection } from "@/components/sections/partners-section";
 import { FinalCtaSection } from "@/components/sections/final-cta-section";
 import {
+  getCities,
   getGuides,
   getHomepageSections,
   getInterests,
@@ -28,7 +29,7 @@ export const metadata = {
 };
 
 export default async function HomePage() {
-  const [opportunities, sessions, guides, stories, partners, pathSteps, interests, homepageSections] =
+  const [opportunities, sessions, guides, stories, partners, pathSteps, interests, cities, homepageSections] =
     await Promise.all([
       getOpportunities(),
       getSessions(),
@@ -37,6 +38,7 @@ export default async function HomePage() {
       getPartners(),
       getPathSteps(),
       getInterests(),
+      getCities(),
       getHomepageSections(),
     ]);
 
@@ -102,7 +104,7 @@ export default async function HomePage() {
         )}
         {isEnabled(sections.community) && (
           <Reveal>
-            <CommunitySection config={sections.community} />
+            <CommunitySection config={sections.community} cities={cities} />
           </Reveal>
         )}
         {isEnabled(sections.discovery) && (
