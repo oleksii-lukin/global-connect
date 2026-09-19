@@ -1,0 +1,21 @@
+# Global Connect
+
+> Helping young people discover what's possible — international opportunities, online sessions, and practical guides.
+
+## What this site offers
+
+- **Opportunities** — International exchanges, scholarships, conferences and volunteering for young people
+- **Online Sessions** — Speaking clubs, workshops and skill-building sessions
+- **Guides** — How-to articles on applications, CVs, motivation letters, scholarships and more
+- **Community** — A space for young people to connect and support each other
+
+## Key pages
+
+- /opportunities — Browse and filter opportunities by country, type, age, and funding
+- /sessions — Explore upcoming online sessions
+- /guides — Read practical guides on international programmes
+- /about — Learn about Global Connect
+
+## Contact
+
+Reach out at hello@globalconnect.example

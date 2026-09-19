@@ -16,12 +16,21 @@ const fraunces = Fraunces({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://global-connect-woad.vercel.app"),
   title: {
     default: "Global Connect — Your next global opportunity",
     template: "%s · Global Connect",
   },
   description:
     "Discover international opportunities, online sessions, guides and a global youth community. Exchanges, scholarships, conferences and volunteering for young people.",
+  openGraph: {
+    title: "Global Connect — Your next global opportunity",
+    description:
+      "Discover international opportunities, online sessions, guides and a global youth community. Exchanges, scholarships, conferences and volunteering for young people.",
+    siteName: "Global Connect",
+    type: "website",
+    locale: "en_US",
+  },
 };
 
 export const viewport: Viewport = {
