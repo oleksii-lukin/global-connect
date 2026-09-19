@@ -31,6 +31,9 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
   },
+  other: {
+    "apple-mobile-web-app-title": "Global Connect",
+  },
 };
 
 export const viewport: Viewport = {
