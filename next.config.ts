@@ -10,6 +10,14 @@ const nextConfig: NextConfig = {
       expire: 30 * 24 * 60 * 60, // drop old cached content after 30 days
     },
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "images.ctfassets.net",
+      },
+    ],
+  },
 };
 
 export default nextConfig;
