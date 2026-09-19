@@ -106,3 +106,18 @@ export type Partner = Entry<PartnerSkeleton, undefined, "en-US">;
 export type PathStep = Entry<PathStepSkeleton, undefined, "en-US">;
 export type Interest = Entry<InterestSkeleton, undefined, "en-US">;
 export type Community = Entry<CommunitySkeleton, undefined, "en-US">;
+
+export type HomepageSectionSkeleton = EntrySkeletonType<
+  {
+    section: EntryFieldTypes.Symbol<string>;
+    eyebrow?: EntryFieldTypes.Symbol<string>;
+    title?: EntryFieldTypes.Symbol<string>;
+    description?: EntryFieldTypes.Text<string>;
+    image?: EntryFieldTypes.AssetLink;
+    imageAlt?: EntryFieldTypes.Symbol<string>;
+    enabled?: EntryFieldTypes.Boolean;
+  },
+  "homepageSection"
+>;
+
+export type HomepageSection = Entry<HomepageSectionSkeleton, undefined, "en-US">;

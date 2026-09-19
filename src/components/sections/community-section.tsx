@@ -1,6 +1,7 @@
 import Image from "next/image";
 
 import { SectionHeading } from "@/components/sections/section";
+import type { HomepageSectionData } from "@/types/models";
 
 const FEATURES = [
   { icon: "🌍", text: "Meet young people worldwide" },
@@ -21,17 +22,21 @@ const AVATARS = [
   { initials: "EM", city: "Madrid", bg: "bg-sage/20" },
 ];
 
-export function CommunitySection() {
+export function CommunitySection({
+  config,
+}: {
+  config?: HomepageSectionData;
+}) {
   return (
     <section id="community" className="px-6 py-24 sm:py-32">
       <div className="mx-auto max-w-7xl">
         <div className="grid items-start gap-16 lg:grid-cols-2">
           <div>
             <SectionHeading
-              eyebrow="Community"
+              eyebrow={config?.eyebrow ?? "Community"}
               eyebrowDot="blush"
-              title="You're not doing this alone."
-              description="Global Connect is more than an opportunity directory. It's a place where young people prepare together, share what worked, and keep going after the first rejection."
+              title={config?.title ?? "You're not doing this alone."}
+              description={config?.description ?? "Global Connect is more than an opportunity directory. It's a place where young people prepare together, share what worked, and keep going after the first rejection."}
               align="left"
             />
             <ul className="mt-10 space-y-3">
@@ -59,8 +64,8 @@ export function CommunitySection() {
           <div>
             <div className="relative overflow-hidden rounded-[2rem] border border-border shadow-[0_30px_70px_-45px_rgba(36,36,64,0.5)]">
               <Image
-                src="/community-circle.jpg"
-                alt="Young people from different countries talking in a circle"
+                src={config?.imageUrl ?? "/community-circle.jpg"}
+                alt={config?.imageAlt ?? "Young people from different countries talking in a circle"}
                 width={1200}
                 height={912}
                 loading="lazy"

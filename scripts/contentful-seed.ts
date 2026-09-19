@@ -7,6 +7,7 @@ import { BLOCKS } from "@contentful/rich-text-types";
 import type { Document } from "@contentful/rich-text-types";
 import {
   seedCommunity,
+  seedHomepageSections,
   seedInterests,
   seedOpportunities,
   seedPartners,
@@ -126,6 +127,50 @@ async function uploadAsset(assetId: string, title: string) {
   console.log("uploaded asset", assetId);
 }
 
+async function uploadLocalAsset(
+  assetId: string,
+  filePath: string,
+  title: string,
+) {
+  const base = { spaceId: SPACE, environmentId: ENV, assetId };
+  try {
+    await client.asset.get(base);
+    console.log("asset exists", assetId);
+    return;
+  } catch {
+    // not found — create below
+  }
+  const fileBytes = fs.readFileSync(filePath);
+  const contentType =
+    filePath.endsWith(".png") ? "image/png" : "image/jpeg";
+  const fileName = path.basename(filePath);
+  const upload = await client.upload.create(
+    { spaceId: SPACE, environmentId: ENV },
+    { file: fileBytes },
+  );
+  const asset = await client.asset.createWithId(base, {
+    fields: {
+      title: { "en-US": title },
+      file: {
+        "en-US": {
+          contentType,
+          fileName,
+          uploadFrom: {
+            sys: {
+              type: "Link",
+              linkType: "Upload",
+              id: upload.sys.id,
+            },
+          },
+        },
+      },
+    },
+  });
+  const processed = await client.asset.processForAllLocales(base, asset);
+  await client.asset.publish(base, processed);
+  console.log("uploaded local asset", assetId);
+}
+
 // ---------------------------------------------------------------------------
 // Entry upsert
 // ---------------------------------------------------------------------------
@@ -168,6 +213,7 @@ async function main(): Promise<void> {
     "pathStep",
     "interest",
     "community",
+    "homepageSection",
   ];
 
   // Content types must be published before their entries appear in the Delivery API.
@@ -268,6 +314,55 @@ async function main(): Promise<void> {
       label: { "en-US": c.label },
       members: { "en-US": c.members },
     });
+  }
+
+  // Homepage sections — upload local images then upsert entries
+  const homepageImages: [string, string, string][] = [
+    ["asset-homepage-hero", "public/hero-youth.jpg", "Hero section image"],
+    [
+      "asset-homepage-sessions",
+      "public/session-online.jpg",
+      "Sessions section image",
+    ],
+    [
+      "asset-homepage-community",
+      "public/community-circle.jpg",
+      "Community section image",
+    ],
+  ];
+  for (const [id, file, title] of homepageImages) {
+    await uploadLocalAsset(id, file, title);
+  }
+
+  for (const key of Object.keys(seedHomepageSections) as Array<
+    keyof typeof seedHomepageSections
+  >) {
+    const s = seedHomepageSections[key];
+    const fields: Record<string, { "en-US": unknown }> = {
+      section: { "en-US": s.section },
+      enabled: { "en-US": s.enabled },
+    };
+    if (s.eyebrow) fields.eyebrow = { "en-US": s.eyebrow };
+    if (s.title) fields.title = { "en-US": s.title };
+    if (s.description) fields.description = { "en-US": s.description };
+    if (s.imageAlt) fields.imageAlt = { "en-US": s.imageAlt };
+    if (s.imageUrl && s.imageUrl.startsWith("/")) {
+      // Map local fallback URLs to uploaded asset IDs
+      const imageMap: Record<string, string> = {
+        "/hero-youth.jpg": "asset-homepage-hero",
+        "/session-online.jpg": "asset-homepage-sessions",
+        "/community-circle.jpg": "asset-homepage-community",
+      };
+      const assetId = imageMap[s.imageUrl];
+      if (assetId) {
+        fields.image = {
+          "en-US": {
+            sys: { type: "Link", linkType: "Asset", id: assetId },
+          },
+        };
+      }
+    }
+    await upsert("homepageSection", s.id, fields);
   }
 
   console.log("Seeding complete.");

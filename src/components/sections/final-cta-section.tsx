@@ -2,8 +2,13 @@ import { Suspense } from "react";
 import { Show, SignInButton } from "@clerk/nextjs";
 
 import { Button } from "@/components/ui/button";
+import type { HomepageSectionData } from "@/types/models";
 
-export function FinalCtaSection() {
+export function FinalCtaSection({
+  config,
+}: {
+  config?: HomepageSectionData;
+}) {
   return (
     <section
       id="join"
@@ -20,10 +25,10 @@ export function FinalCtaSection() {
 
       <div className="relative mx-auto max-w-3xl text-center">
         <h2 className="font-display text-4xl leading-[1.08] text-foreground sm:text-6xl">
-          The world is bigger than you think.
+          {config?.title ?? "The world is bigger than you think."}
         </h2>
         <p className="mx-auto mt-6 max-w-xl text-base text-muted-foreground sm:text-lg">
-          Your next opportunity could be one search away.
+          {config?.description ?? "Your next opportunity could be one search away."}
         </p>
         <div className="mt-10 flex flex-col justify-center gap-3 sm:flex-row">
           <Button

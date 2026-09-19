@@ -1,5 +1,7 @@
 import type {
   CommunityData,
+  HomepageSectionData,
+  HomepageSectionKey,
   InterestData,
   OpportunityData,
   PartnerData,
@@ -1389,3 +1391,104 @@ export const seedCommunity: CommunityData[] = [
   { id: "seed-community-competitions", emoji: "🏆", label: "Competitions", members: "510 members" },
   { id: "seed-community-climate", emoji: "🌱", label: "Climate & Sustainability", members: "370 members" },
 ];
+
+// ---------------------------------------------------------------------------
+// Homepage sections
+// ---------------------------------------------------------------------------
+
+export const seedHomepageSections: Record<
+  HomepageSectionKey,
+  HomepageSectionData
+> = {
+  hero: {
+    id: "seed-homepage-hero",
+    section: "hero",
+    eyebrow: "For young people, everywhere",
+    title: "Your next global opportunity starts here.",
+    description:
+      "Discover international opportunities, learn from experts, build confidence and connect with young people around the world.",
+    imageUrl: "/hero-youth.jpg",
+    imageAlt: "Young people from different countries laughing together on a campus",
+    enabled: true,
+  },
+  stats: {
+    id: "seed-homepage-stats",
+    section: "stats",
+    enabled: true,
+  },
+  opportunityFinder: {
+    id: "seed-homepage-opportunity-finder",
+    section: "opportunityFinder",
+    eyebrow: "Opportunity finder",
+    title: "Find an opportunity that's actually for you.",
+    description: "Stop scrolling through opportunities you can't apply for.",
+    enabled: true,
+  },
+  path: {
+    id: "seed-homepage-path",
+    section: "path",
+    eyebrow: "The path",
+    title: "How Global Connect works",
+    enabled: true,
+  },
+  sessions: {
+    id: "seed-homepage-sessions",
+    section: "sessions",
+    eyebrow: "Online sessions",
+    title: "Learn. Speak. Connect.",
+    description:
+      "Build the skills and confidence you need to take your next global step.",
+    imageUrl: "/session-online.jpg",
+    imageAlt: "A young woman taking notes during an online Global Connect session",
+    enabled: true,
+  },
+  guides: {
+    id: "seed-homepage-guides",
+    section: "guides",
+    eyebrow: "Guides",
+    title: "Don't just find opportunities. Learn how to get them.",
+    enabled: true,
+  },
+  stories: {
+    id: "seed-homepage-stories",
+    section: "stories",
+    eyebrow: "Student stories",
+    title: "Real people. Real opportunities. Real growth.",
+    description:
+      "Real experiences from young people discovering opportunities, building confidence and connecting with the world.",
+    enabled: true,
+  },
+  community: {
+    id: "seed-homepage-community",
+    section: "community",
+    eyebrow: "Community",
+    title: "You're not doing this alone.",
+    description:
+      "Global Connect is more than an opportunity directory. It's a place where young people prepare together, share what worked, and keep going after the first rejection.",
+    imageUrl: "/community-circle.jpg",
+    imageAlt: "Young people from different countries talking in a circle",
+    enabled: true,
+  },
+  discovery: {
+    id: "seed-homepage-discovery",
+    section: "discovery",
+    eyebrow: "Personalised discovery",
+    title: "What do you dream about?",
+    description:
+      "Tell us what you're interested in, and we'll help you find somewhere to begin.",
+    enabled: true,
+  },
+  partners: {
+    id: "seed-homepage-partners",
+    section: "partners",
+    title: "Built with people who believe in young people.",
+    enabled: true,
+  },
+  finalCta: {
+    id: "seed-homepage-final-cta",
+    section: "finalCta",
+    title: "The world is bigger than you think.",
+    description: "Your next opportunity could be one search away.",
+    enabled: true,
+  },
+};

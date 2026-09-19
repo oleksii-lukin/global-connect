@@ -4,7 +4,7 @@ import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { PageHeader } from "@/components/page-header";
 import { PartnersSection } from "@/components/sections/partners-section";
-import { getPartners, getStories } from "@/lib/contentful/queries";
+import { getHomepageSections, getPartners, getStories } from "@/lib/contentful/queries";
 import { StoriesSection } from "@/components/sections/stories-section";
 
 export const metadata: Metadata = {
@@ -14,7 +14,11 @@ export const metadata: Metadata = {
 };
 
 export default async function AboutPage() {
-  const [partners, stories] = await Promise.all([getPartners(), getStories()]);
+  const [partners, stories, homepageSections] = await Promise.all([
+    getPartners(),
+    getStories(),
+    getHomepageSections(),
+  ]);
 
   return (
     <>
@@ -38,10 +42,10 @@ export default async function AboutPage() {
           </div>
         </div>
 
-        <StoriesSection stories={stories} />
+        <StoriesSection stories={stories} config={homepageSections.stories} />
 
         <div id="partners">
-          <PartnersSection partners={partners} />
+          <PartnersSection partners={partners} config={homepageSections.partners} />
         </div>
 
         <div id="contact" className="mx-auto max-w-xl px-4 py-12 text-center sm:px-6">

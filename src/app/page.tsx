@@ -14,6 +14,7 @@ import { PartnersSection } from "@/components/sections/partners-section";
 import { FinalCtaSection } from "@/components/sections/final-cta-section";
 import {
   getGuides,
+  getHomepageSections,
   getInterests,
   getOpportunities,
   getPartners,
@@ -27,7 +28,7 @@ export const metadata = {
 };
 
 export default async function HomePage() {
-  const [opportunities, sessions, guides, stories, partners, pathSteps, interests] =
+  const [opportunities, sessions, guides, stories, partners, pathSteps, interests, homepageSections] =
     await Promise.all([
       getOpportunities(),
       getSessions(),
@@ -36,6 +37,7 @@ export default async function HomePage() {
       getPartners(),
       getPathSteps(),
       getInterests(),
+      getHomepageSections(),
     ]);
 
   const featured = opportunities.filter((o) => o.featured);
@@ -45,36 +47,36 @@ export default async function HomePage() {
     <>
       <SiteHeader />
       <main className="flex-1">
-        <HeroSection featured={heroFeatured} />
+        <HeroSection featured={heroFeatured} config={homepageSections.hero} />
         <Reveal>
-          <StatsBand />
+          <StatsBand config={homepageSections.stats} />
         </Reveal>
         <Reveal delay={80}>
-          <OpportunityFinder opportunities={opportunities} limit={3} />
+          <OpportunityFinder opportunities={opportunities} limit={3} config={homepageSections.opportunityFinder} />
         </Reveal>
         <Reveal>
-          <PathSection steps={pathSteps} />
+          <PathSection steps={pathSteps} config={homepageSections.path} />
         </Reveal>
         <Reveal delay={80}>
-          <SessionsSection sessions={sessions} />
+          <SessionsSection sessions={sessions} config={homepageSections.sessions} />
         </Reveal>
         <Reveal>
-          <GuidesSection guides={guides} />
+          <GuidesSection guides={guides} config={homepageSections.guides} />
         </Reveal>
         <Reveal delay={80}>
-          <StoriesSection stories={stories} />
+          <StoriesSection stories={stories} config={homepageSections.stories} />
         </Reveal>
         <Reveal>
-          <CommunitySection />
+          <CommunitySection config={homepageSections.community} />
         </Reveal>
         <Reveal delay={80}>
-          <DiscoverySection interests={interests} />
+          <DiscoverySection interests={interests} config={homepageSections.discovery} />
         </Reveal>
         <Reveal>
-          <PartnersSection partners={partners} />
+          <PartnersSection partners={partners} config={homepageSections.partners} />
         </Reveal>
         <Reveal delay={80}>
-          <FinalCtaSection />
+          <FinalCtaSection config={homepageSections.finalCta} />
         </Reveal>
       </main>
       <SiteFooter />

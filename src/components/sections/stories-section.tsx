@@ -1,6 +1,6 @@
 import { SectionHeading, CardShell } from "@/components/sections/section";
 import { Carousel } from "@/components/carousel";
-import type { StoryData } from "@/types/models";
+import type { HomepageSectionData, StoryData } from "@/types/models";
 
 const avatarColors = [
   "bg-lavender/25 text-accent-foreground",
@@ -9,7 +9,13 @@ const avatarColors = [
 ];
 const dotColors = ["bg-lavender", "bg-pastel-blue", "bg-sage"];
 
-export function StoriesSection({ stories }: { stories: StoryData[] }) {
+export function StoriesSection({
+  stories,
+  config,
+}: {
+  stories: StoryData[];
+  config?: HomepageSectionData;
+}) {
   return (
     <section className="relative overflow-hidden bg-background px-6 py-24 sm:py-32">
       <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
@@ -21,10 +27,10 @@ export function StoriesSection({ stories }: { stories: StoryData[] }) {
 
       <div className="relative mx-auto max-w-6xl">
         <SectionHeading
-          eyebrow="Student stories"
+          eyebrow={config?.eyebrow ?? "Student stories"}
           eyebrowDot="lavender"
-          title="Real people. Real opportunities. Real growth."
-          description="Real experiences from young people discovering opportunities, building confidence and connecting with the world."
+          title={config?.title ?? "Real people. Real opportunities. Real growth."}
+          description={config?.description ?? "Real experiences from young people discovering opportunities, building confidence and connecting with the world."}
           className="mx-auto max-w-2xl text-center"
         />
 

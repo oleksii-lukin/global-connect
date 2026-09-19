@@ -1,3 +1,5 @@
+import type { HomepageSectionData } from "@/types/models";
+
 const STATS: { value: string; label: string }[] = [
   { value: "1,000+", label: "Members" },
   { value: "500+", label: "Opportunities shared" },
@@ -6,7 +8,7 @@ const STATS: { value: string; label: string }[] = [
   { value: "3", label: "Partnerships" },
 ];
 
-export function StatsBand() {
+export function StatsBand({ config }: { config?: HomepageSectionData }) {
   return (
     <section className="border-y border-border/70 bg-card/40 px-6 py-14">
       <div className="mx-auto grid max-w-7xl grid-cols-2 gap-y-10 sm:grid-cols-3 lg:grid-cols-5">

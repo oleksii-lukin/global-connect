@@ -1,14 +1,20 @@
 import { SectionBand, SectionHeading } from "@/components/sections/section";
-import type { InterestData } from "@/types/models";
+import type { HomepageSectionData, InterestData } from "@/types/models";
 
-export function DiscoverySection({ interests }: { interests: InterestData[] }) {
+export function DiscoverySection({
+  interests,
+  config,
+}: {
+  interests: InterestData[];
+  config?: HomepageSectionData;
+}) {
   return (
     <SectionBand id="discovery">
       <SectionHeading
-        eyebrow="Personalised discovery"
+        eyebrow={config?.eyebrow ?? "Personalised discovery"}
         eyebrowDot="peach"
-        title="What do you dream about?"
-        description="Tell us what you're interested in, and we'll help you find somewhere to begin."
+        title={config?.title ?? "What do you dream about?"}
+        description={config?.description ?? "Tell us what you're interested in, and we'll help you find somewhere to begin."}
       />
       <div className="mx-auto mt-10 flex max-w-3xl flex-wrap justify-center gap-2.5">
         {interests.map((interest) => (

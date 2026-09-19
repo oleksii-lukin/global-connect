@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 import { SectionBand, SectionHeading } from "@/components/sections/section";
-import type { GuideData } from "@/types/models";
+import type { GuideData, HomepageSectionData } from "@/types/models";
 
 const tileColors = [
   "bg-lavender/25",
@@ -12,13 +12,19 @@ const tileColors = [
   "bg-lavender/20",
 ];
 
-export function GuidesSection({ guides }: { guides: GuideData[] }) {
+export function GuidesSection({
+  guides,
+  config,
+}: {
+  guides: GuideData[];
+  config?: HomepageSectionData;
+}) {
   return (
     <SectionBand id="guides" className="scroll-mt-20">
       <SectionHeading
-        eyebrow="Guides"
+        eyebrow={config?.eyebrow ?? "Guides"}
         eyebrowDot="peach"
-        title="Don't just find opportunities. Learn how to get them."
+        title={config?.title ?? "Don't just find opportunities. Learn how to get them."}
         align="left"
       />
       <div className="mt-14 grid gap-px overflow-hidden rounded-3xl border border-border bg-border sm:grid-cols-2 lg:grid-cols-3">

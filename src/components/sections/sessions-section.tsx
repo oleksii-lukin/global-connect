@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { Section, SectionHeading } from "@/components/sections/section";
-import type { SessionData } from "@/types/models";
+import type { HomepageSectionData, SessionData } from "@/types/models";
 
 const SESSION_COUNT = "35";
 const tileColors = [
@@ -14,17 +14,19 @@ const tileColors = [
 
 export function SessionsSection({
   sessions,
+  config,
 }: {
   sessions: SessionData[];
+  config?: HomepageSectionData;
 }) {
   return (
     <Section id="sessions" className="scroll-mt-20">
       <div className="flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
         <SectionHeading
-          eyebrow="Online sessions"
+          eyebrow={config?.eyebrow ?? "Online sessions"}
           eyebrowDot="sage"
-          title="Learn. Speak. Connect."
-          description="Build the skills and confidence you need to take your next global step."
+          title={config?.title ?? "Learn. Speak. Connect."}
+          description={config?.description ?? "Build the skills and confidence you need to take your next global step."}
           align="left"
         />
         <p className="shrink-0 font-display text-5xl text-foreground">
@@ -37,8 +39,8 @@ export function SessionsSection({
 
       <div className="mt-12 overflow-hidden rounded-[2rem] border border-border shadow-[0_30px_70px_-45px_rgba(36,36,64,0.5)]">
         <Image
-          src="/session-online.jpg"
-          alt="A young woman taking notes during an online Global Connect session"
+          src={config?.imageUrl ?? "/session-online.jpg"}
+          alt={config?.imageAlt ?? "A young woman taking notes during an online Global Connect session"}
           width={1024}
           height={768}
           loading="lazy"

@@ -1,5 +1,5 @@
 import { SectionBand, SectionHeading } from "@/components/sections/section";
-import type { PathStepData } from "@/types/models";
+import type { HomepageSectionData, PathStepData } from "@/types/models";
 
 const stepRuleColors = [
   "bg-lavender",
@@ -9,13 +9,19 @@ const stepRuleColors = [
   "bg-blush",
 ];
 
-export function PathSection({ steps }: { steps: PathStepData[] }) {
+export function PathSection({
+  steps,
+  config,
+}: {
+  steps: PathStepData[];
+  config?: HomepageSectionData;
+}) {
   return (
     <SectionBand>
       <SectionHeading
-        eyebrow="The path"
+        eyebrow={config?.eyebrow ?? "The path"}
         eyebrowDot="pastel-blue"
-        title="How Global Connect works"
+        title={config?.title ?? "How Global Connect works"}
         align="left"
       />
       <ol className="mt-14 grid gap-10 sm:grid-cols-2 lg:grid-cols-5 lg:gap-8">

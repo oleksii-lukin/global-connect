@@ -15,14 +15,16 @@ import {
 } from "@/components/ui/select";
 import Link from "next/link";
 import { Section, SectionHeading } from "@/components/sections/section";
-import type { OpportunityData } from "@/types/models";
+import type { HomepageSectionData, OpportunityData } from "@/types/models";
 
 export function OpportunityFinder({
   opportunities,
   limit,
+  config,
 }: {
   opportunities: OpportunityData[];
   limit?: number;
+  config?: HomepageSectionData;
 }) {
   const [search, setSearch] = useState("");
   const [country, setCountry] = useState("all");
@@ -90,10 +92,10 @@ export function OpportunityFinder({
   return (
     <Section id="opportunities" className="scroll-mt-20">
       <SectionHeading
-        eyebrow="Opportunity finder"
+        eyebrow={config?.eyebrow ?? "Opportunity finder"}
         eyebrowDot="lavender"
-        title="Find an opportunity that's actually for you."
-        description="Stop scrolling through opportunities you can't apply for."
+        title={config?.title ?? "Find an opportunity that's actually for you."}
+        description={config?.description ?? "Stop scrolling through opportunities you can't apply for."}
       />
 
       <div className="mx-auto mb-10 mt-12 max-w-3xl">

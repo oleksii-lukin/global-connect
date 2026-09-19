@@ -6,6 +6,7 @@ import { getContentfulClient } from "./client";
 import {
   seedCommunity,
   seedGuides,
+  seedHomepageSections,
   seedInterests,
   seedOpportunities,
   seedPartners,
@@ -18,6 +19,8 @@ import type {
   CommunitySkeleton,
   Guide,
   GuideSkeleton,
+  HomepageSection,
+  HomepageSectionSkeleton,
   Interest,
   InterestSkeleton,
   Opportunity,
@@ -33,13 +36,15 @@ import type {
 } from "@/types/contentful";
 import type {
   CommunityData,
+  GuideData,
+  HomepageSectionData,
+  HomepageSectionKey,
   InterestData,
   OpportunityData,
   PartnerData,
   PathStepData,
   SessionData,
   StoryData,
-  GuideData,
 } from "@/types/models";
 
 type ResolvedAssetLink =
@@ -160,6 +165,20 @@ function mapCommunity(entry: Community): CommunityData {
     emoji: fields.emoji ?? "✨",
     label: fields.label,
     members: fields.members ?? "",
+  };
+}
+
+function mapHomepageSection(entry: HomepageSection): HomepageSectionData {
+  const fields = entry.fields;
+  return {
+    id: entry.sys.id,
+    section: fields.section as HomepageSectionKey,
+    eyebrow: fields.eyebrow ?? undefined,
+    title: fields.title ?? undefined,
+    description: fields.description ?? undefined,
+    imageUrl: assetUrl(fields.image),
+    imageAlt: fields.imageAlt ?? undefined,
+    enabled: fields.enabled ?? true,
   };
 }
 
@@ -327,5 +346,35 @@ export async function getCommunityTopics(): Promise<CommunityData[]> {
         .getEntries<CommunitySkeleton>({ content_type: "community", limit: 100 })
         .then((r) => r.items.map(mapCommunity)),
     seedCommunity,
+  );
+}
+
+export async function getHomepageSections(): Promise<
+  Record<HomepageSectionKey, HomepageSectionData | undefined>
+> {
+  "use cache";
+  cacheLife("cms");
+  cacheTag("contentful");
+
+  return queryOrSeed(
+    (client) =>
+      client
+        .getEntries<HomepageSectionSkeleton>({
+          content_type: "homepageSection",
+          limit: 100,
+          include: 10,
+        })
+        .then((r) => {
+          const map = {} as Record<
+            HomepageSectionKey,
+            HomepageSectionData | undefined
+          >;
+          for (const item of r.items) {
+            const data = mapHomepageSection(item);
+            map[data.section] = data;
+          }
+          return map;
+        }),
+    seedHomepageSections,
   );
 }

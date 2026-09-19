@@ -4,15 +4,17 @@ import { Show, SignInButton } from "@clerk/nextjs";
 
 import { Button } from "@/components/ui/button";
 import { SectionEyebrow } from "@/components/sections/section";
-import type { OpportunityData } from "@/types/models";
+import type { HomepageSectionData, OpportunityData } from "@/types/models";
 
 const chipTileColors = ["bg-lavender/20", "bg-pastel-blue/20", "bg-sage/20"];
 const chipTranslations = ["", "sm:translate-x-10", "sm:-translate-x-4"];
 
 export function HeroSection({
   featured,
+  config,
 }: {
   featured: OpportunityData[];
+  config?: HomepageSectionData;
 }) {
   const chips = featured.slice(0, 3);
 
@@ -29,23 +31,35 @@ export function HeroSection({
 
       <div className="relative mx-auto grid max-w-7xl items-center gap-16 lg:grid-cols-[1.05fr_1fr]">
         <div>
-          <SectionEyebrow dot="sage">For young people, everywhere</SectionEyebrow>
+          <SectionEyebrow dot="sage">{config?.eyebrow ?? "For young people, everywhere"}</SectionEyebrow>
 
           <h1 className="mt-7 font-display text-[2.6rem] leading-[1.05] tracking-tight text-foreground sm:text-6xl">
-            Your next global
-            <br className="hidden sm:block" /> opportunity{" "}
-            <span className="relative inline-block">
-              starts here.
-              <span
-                className="absolute inset-x-0 bottom-1 -z-10 h-3 rounded-full bg-peach/40"
-                aria-hidden="true"
-              />
-            </span>
+            {config?.title
+              ? <>
+                  {config.title.replace(/\s+\S+\s*$/, "")}{" "}
+                  <span className="relative inline-block">
+                    {config.title.split(/\s+/).slice(-2).join(" ")}
+                    <span
+                      className="absolute inset-x-0 bottom-1 -z-10 h-3 rounded-full bg-peach/40"
+                      aria-hidden="true"
+                    />
+                  </span>
+                </>
+              : <>
+                  Your next global
+                  <br className="hidden sm:block" /> opportunity{" "}
+                  <span className="relative inline-block">
+                    starts here.
+                    <span
+                      className="absolute inset-x-0 bottom-1 -z-10 h-3 rounded-full bg-peach/40"
+                      aria-hidden="true"
+                    />
+                  </span>
+                </>}
           </h1>
 
           <p className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
-            Discover international opportunities, learn from experts, build
-            confidence and connect with young people around the world.
+            {config?.description ?? "Discover international opportunities, learn from experts, build confidence and connect with young people around the world."}
           </p>
 
           <div className="mt-9 flex flex-col gap-3 sm:flex-row">
@@ -89,8 +103,8 @@ export function HeroSection({
           />
           <div className="relative overflow-hidden rounded-[2rem] border border-border shadow-[0_30px_70px_-40px_rgba(36,36,64,0.55)]">
             <Image
-              src="/hero-youth.jpg"
-              alt="Young people from different countries laughing together on a campus"
+              src={config?.imageUrl ?? "/hero-youth.jpg"}
+              alt={config?.imageAlt ?? "Young people from different countries laughing together on a campus"}
               width={1024}
               height={1280}
               className="h-[26rem] w-full object-cover sm:h-[34rem]"

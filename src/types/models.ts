@@ -81,6 +81,30 @@ export interface CommunityData {
   members: string;
 }
 
+export type HomepageSectionKey =
+  | "hero"
+  | "stats"
+  | "opportunityFinder"
+  | "path"
+  | "sessions"
+  | "guides"
+  | "stories"
+  | "community"
+  | "discovery"
+  | "partners"
+  | "finalCta";
+
+export interface HomepageSectionData {
+  id: string;
+  section: HomepageSectionKey;
+  eyebrow?: string;
+  title?: string;
+  description?: string;
+  imageUrl?: string;
+  imageAlt?: string;
+  enabled: boolean;
+}
+
 export interface SiteStats {
   members: string;
   opportunitiesShared: string;

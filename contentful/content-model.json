@@ -555,6 +555,101 @@
           "omitted": false
         }
       ]
+    },
+    {
+      "sys": { "id": "homepageSection", "type": "ContentType" },
+      "name": "Homepage Section",
+      "description": "Configures the heading, description and image of a homepage section.",
+      "displayField": "section",
+      "fields": [
+        {
+          "id": "section",
+          "name": "Section",
+          "type": "Symbol",
+          "localized": false,
+          "required": true,
+          "validations": [
+            {
+              "in": [
+                "hero",
+                "stats",
+                "opportunityFinder",
+                "path",
+                "sessions",
+                "guides",
+                "stories",
+                "community",
+                "discovery",
+                "partners",
+                "finalCta"
+              ]
+            }
+          ],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "eyebrow",
+          "name": "Eyebrow",
+          "type": "Symbol",
+          "localized": false,
+          "required": false,
+          "validations": [],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "title",
+          "name": "Title",
+          "type": "Symbol",
+          "localized": false,
+          "required": false,
+          "validations": [],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "description",
+          "name": "Description",
+          "type": "Text",
+          "localized": false,
+          "required": false,
+          "validations": [],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "image",
+          "name": "Image",
+          "type": "Link",
+          "linkType": "Asset",
+          "localized": false,
+          "required": false,
+          "validations": [],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "imageAlt",
+          "name": "Image alt text",
+          "type": "Symbol",
+          "localized": false,
+          "required": false,
+          "validations": [],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "enabled",
+          "name": "Enabled",
+          "type": "Boolean",
+          "localized": false,
+          "required": false,
+          "validations": [],
+          "disabled": false,
+          "omitted": false
+        }
+      ]
     }
   ],
   "editorInterfaces": []

@@ -1,11 +1,17 @@
-import type { PartnerData } from "@/types/models";
+import type { HomepageSectionData, PartnerData } from "@/types/models";
 
-export function PartnersSection({ partners }: { partners: PartnerData[] }) {
+export function PartnersSection({
+  partners,
+  config,
+}: {
+  partners: PartnerData[];
+  config?: HomepageSectionData;
+}) {
   return (
     <section id="about" className="px-6 py-20 sm:py-24">
       <div className="mx-auto max-w-7xl">
         <p className="text-center font-display text-2xl text-foreground sm:text-3xl">
-          Built with people who believe in young people.
+          {config?.title ?? "Built with people who believe in young people."}
         </p>
         <div className="mt-12 grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-3 lg:grid-cols-6">
           {partners.map((partner) => (
