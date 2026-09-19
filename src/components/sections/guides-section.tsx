@@ -22,9 +22,9 @@ export function GuidesSection({
   return (
     <SectionBand id="guides" className="scroll-mt-20">
       <SectionHeading
-        eyebrow={config?.eyebrow ?? "Guides"}
+        eyebrow={config?.eyebrow}
         eyebrowDot="peach"
-        title={config?.title ?? "Don't just find opportunities. Learn how to get them."}
+        title={config?.title ?? "Guides"}
         align="left"
       />
       <div className="mt-14 grid gap-px overflow-hidden rounded-3xl border border-border bg-border sm:grid-cols-2 lg:grid-cols-3">

@@ -42,11 +42,15 @@ export default async function AboutPage() {
           </div>
         </div>
 
-        <StoriesSection stories={stories} config={homepageSections.stories} />
+        {homepageSections.stories && homepageSections.stories.enabled !== false && (
+          <StoriesSection stories={stories} config={homepageSections.stories} />
+        )}
 
-        <div id="partners">
-          <PartnersSection partners={partners} config={homepageSections.partners} />
-        </div>
+        {homepageSections.partners && homepageSections.partners.enabled !== false && (
+          <div id="partners">
+            <PartnersSection partners={partners} config={homepageSections.partners} />
+          </div>
+        )}
 
         <div id="contact" className="mx-auto max-w-xl px-4 py-12 text-center sm:px-6">
           <h2 className="font-display text-2xl tracking-tight text-foreground">

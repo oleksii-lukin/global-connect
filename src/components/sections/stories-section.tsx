@@ -27,10 +27,10 @@ export function StoriesSection({
 
       <div className="relative mx-auto max-w-6xl">
         <SectionHeading
-          eyebrow={config?.eyebrow ?? "Student stories"}
+          eyebrow={config?.eyebrow}
           eyebrowDot="lavender"
-          title={config?.title ?? "Real people. Real opportunities. Real growth."}
-          description={config?.description ?? "Real experiences from young people discovering opportunities, building confidence and connecting with the world."}
+          title={config?.title ?? "Stories"}
+          description={config?.description}
           className="mx-auto max-w-2xl text-center"
         />
 

@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { OpportunityFinder } from "@/components/sections/opportunity-finder";
-import { getOpportunities } from "@/lib/contentful/queries";
+import { getHomepageSections, getOpportunities } from "@/lib/contentful/queries";
 
 export const metadata: Metadata = {
   title: "Opportunities",
@@ -12,13 +12,16 @@ export const metadata: Metadata = {
 };
 
 export default async function OpportunitiesPage() {
-  const opportunities = await getOpportunities();
+  const [opportunities, homepageSections] = await Promise.all([
+    getOpportunities(),
+    getHomepageSections(),
+  ]);
 
   return (
     <>
       <SiteHeader />
       <main className="flex-1">
-        <OpportunityFinder opportunities={opportunities} />
+        <OpportunityFinder opportunities={opportunities} config={homepageSections.opportunityFinder} />
       </main>
       <SiteFooter />
     </>

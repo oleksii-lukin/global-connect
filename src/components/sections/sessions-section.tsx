@@ -23,10 +23,10 @@ export function SessionsSection({
     <Section id="sessions" className="scroll-mt-20">
       <div className="flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
         <SectionHeading
-          eyebrow={config?.eyebrow ?? "Online sessions"}
+          eyebrow={config?.eyebrow}
           eyebrowDot="sage"
-          title={config?.title ?? "Learn. Speak. Connect."}
-          description={config?.description ?? "Build the skills and confidence you need to take your next global step."}
+          title={config?.title ?? "Sessions"}
+          description={config?.description}
           align="left"
         />
         <p className="shrink-0 font-display text-5xl text-foreground">
@@ -38,14 +38,16 @@ export function SessionsSection({
       </div>
 
       <div className="mt-12 overflow-hidden rounded-[2rem] border border-border shadow-[0_30px_70px_-45px_rgba(36,36,64,0.5)]">
-        <Image
-          src={config?.imageUrl ?? "/session-online.jpg"}
-          alt={config?.imageAlt ?? "A young woman taking notes during an online Global Connect session"}
-          width={1024}
-          height={768}
-          loading="lazy"
-          className="h-64 w-full object-cover transition-transform duration-[1200ms] hover:scale-[1.04] sm:h-80"
-        />
+        {config?.imageUrl && (
+          <Image
+            src={config.imageUrl}
+            alt={config.imageAlt ?? "A young woman taking notes during an online Global Connect session"}
+            width={1024}
+            height={768}
+            loading="lazy"
+            className="h-64 w-full object-cover transition-transform duration-[1200ms] hover:scale-[1.04] sm:h-80"
+          />
+        )}
       </div>
 
       <div className="mt-8 grid gap-6 sm:grid-cols-2">

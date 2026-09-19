@@ -13,8 +13,9 @@ import type {
 import { BLOCKS } from "@contentful/rich-text-types";
 import type { Document } from "@contentful/rich-text-types";
 
-/** Bundled sample content, shown when Contentful isn't configured yet.
- *  Mirrors the reference site. Delete when real CMS content exists. */
+/** Seed data for populating Contentful via `pnpm contentful:seed`.
+ *  Only consumed by scripts/contentful-seed.ts — the app queries Contentful
+ *  directly and does not fall back to this data. */
 
 // ---------------------------------------------------------------------------
 // Rich-text builders (used to author blog-style guide / opportunity bodies)

@@ -31,36 +31,26 @@ export function HeroSection({
 
       <div className="relative mx-auto grid max-w-7xl items-center gap-16 lg:grid-cols-[1.05fr_1fr]">
         <div>
-          <SectionEyebrow dot="sage">{config?.eyebrow ?? "For young people, everywhere"}</SectionEyebrow>
+          {config?.eyebrow && <SectionEyebrow dot="sage">{config.eyebrow}</SectionEyebrow>}
 
-          <h1 className="mt-7 font-display text-[2.6rem] leading-[1.05] tracking-tight text-foreground sm:text-6xl">
-            {config?.title
-              ? <>
-                  {config.title.replace(/\s+\S+\s*$/, "")}{" "}
-                  <span className="relative inline-block">
-                    {config.title.split(/\s+/).slice(-2).join(" ")}
-                    <span
-                      className="absolute inset-x-0 bottom-1 -z-10 h-3 rounded-full bg-peach/40"
-                      aria-hidden="true"
-                    />
-                  </span>
-                </>
-              : <>
-                  Your next global
-                  <br className="hidden sm:block" /> opportunity{" "}
-                  <span className="relative inline-block">
-                    starts here.
-                    <span
-                      className="absolute inset-x-0 bottom-1 -z-10 h-3 rounded-full bg-peach/40"
-                      aria-hidden="true"
-                    />
-                  </span>
-                </>}
-          </h1>
+          {config?.title && (
+            <h1 className="mt-7 font-display text-[2.6rem] leading-[1.05] tracking-tight text-foreground sm:text-6xl">
+              {config.title.replace(/\s+\S+\s*$/, "")}{" "}
+              <span className="relative inline-block">
+                {config.title.split(/\s+/).slice(-2).join(" ")}
+                <span
+                  className="absolute inset-x-0 bottom-1 -z-10 h-3 rounded-full bg-peach/40"
+                  aria-hidden="true"
+                />
+              </span>
+            </h1>
+          )}
 
-          <p className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
-            {config?.description ?? "Discover international opportunities, learn from experts, build confidence and connect with young people around the world."}
-          </p>
+          {config?.description && (
+            <p className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
+              {config.description}
+            </p>
+          )}
 
           <div className="mt-9 flex flex-col gap-3 sm:flex-row">
             <Button render={<a href="#opportunities" />}>
@@ -102,13 +92,15 @@ export function HeroSection({
             aria-hidden="true"
           />
           <div className="relative overflow-hidden rounded-[2rem] border border-border shadow-[0_30px_70px_-40px_rgba(36,36,64,0.55)]">
-            <Image
-              src={config?.imageUrl ?? "/hero-youth.jpg"}
-              alt={config?.imageAlt ?? "Young people from different countries laughing together on a campus"}
-              width={1024}
-              height={1280}
-              className="h-[26rem] w-full object-cover sm:h-[34rem]"
-            />
+            {config?.imageUrl && (
+              <Image
+                src={config.imageUrl}
+                alt={config.imageAlt ?? "Young people from different countries laughing together on a campus"}
+                width={1024}
+                height={1280}
+                className="h-[26rem] w-full object-cover sm:h-[34rem]"
+              />
+            )}
             <div
               className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background/70 via-transparent to-transparent"
               aria-hidden="true"

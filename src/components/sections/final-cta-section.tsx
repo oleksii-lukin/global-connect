@@ -24,12 +24,16 @@ export function FinalCtaSection({
       </div>
 
       <div className="relative mx-auto max-w-3xl text-center">
-        <h2 className="font-display text-4xl leading-[1.08] text-foreground sm:text-6xl">
-          {config?.title ?? "The world is bigger than you think."}
-        </h2>
-        <p className="mx-auto mt-6 max-w-xl text-base text-muted-foreground sm:text-lg">
-          {config?.description ?? "Your next opportunity could be one search away."}
-        </p>
+        {config?.title && (
+          <h2 className="font-display text-4xl leading-[1.08] text-foreground sm:text-6xl">
+            {config.title}
+          </h2>
+        )}
+        {config?.description && (
+          <p className="mx-auto mt-6 max-w-xl text-base text-muted-foreground sm:text-lg">
+            {config.description}
+          </p>
+        )}
         <div className="mt-10 flex flex-col justify-center gap-3 sm:flex-row">
           <Button
             size="lg"

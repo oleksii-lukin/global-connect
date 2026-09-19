@@ -19,9 +19,9 @@ export function PathSection({
   return (
     <SectionBand>
       <SectionHeading
-        eyebrow={config?.eyebrow ?? "The path"}
+        eyebrow={config?.eyebrow}
         eyebrowDot="pastel-blue"
-        title={config?.title ?? "How Global Connect works"}
+        title={config?.title ?? "How it works"}
         align="left"
       />
       <ol className="mt-14 grid gap-10 sm:grid-cols-2 lg:grid-cols-5 lg:gap-8">

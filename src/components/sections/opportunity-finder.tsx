@@ -92,10 +92,10 @@ export function OpportunityFinder({
   return (
     <Section id="opportunities" className="scroll-mt-20">
       <SectionHeading
-        eyebrow={config?.eyebrow ?? "Opportunity finder"}
+        eyebrow={config?.eyebrow}
         eyebrowDot="lavender"
-        title={config?.title ?? "Find an opportunity that's actually for you."}
-        description={config?.description ?? "Stop scrolling through opportunities you can't apply for."}
+        title={config?.title ?? "Opportunities"}
+        description={config?.description}
       />
 
       <div className="mx-auto mb-10 mt-12 max-w-3xl">

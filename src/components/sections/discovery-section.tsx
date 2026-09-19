@@ -11,10 +11,10 @@ export function DiscoverySection({
   return (
     <SectionBand id="discovery">
       <SectionHeading
-        eyebrow={config?.eyebrow ?? "Personalised discovery"}
+        eyebrow={config?.eyebrow}
         eyebrowDot="peach"
-        title={config?.title ?? "What do you dream about?"}
-        description={config?.description ?? "Tell us what you're interested in, and we'll help you find somewhere to begin."}
+        title={config?.title ?? "Discover"}
+        description={config?.description}
       />
       <div className="mx-auto mt-10 flex max-w-3xl flex-wrap justify-center gap-2.5">
         {interests.map((interest) => (

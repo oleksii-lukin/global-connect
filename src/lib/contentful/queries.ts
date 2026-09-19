@@ -1,19 +1,7 @@
 import "server-only";
 import { cacheLife, cacheTag } from "next/cache";
 import type { Asset, UnresolvedLink } from "contentful";
-import type { ContentfulClientApi } from "contentful";
 import { getContentfulClient } from "./client";
-import {
-  seedCommunity,
-  seedGuides,
-  seedHomepageSections,
-  seedInterests,
-  seedOpportunities,
-  seedPartners,
-  seedPathSteps,
-  seedSessions,
-  seedStories,
-} from "./seed";
 import type {
   Community,
   CommunitySkeleton,
@@ -182,41 +170,18 @@ function mapHomepageSection(entry: HomepageSection): HomepageSectionData {
   };
 }
 
-/**
- * Runs a Contentful query and falls back to bundled seed data on any failure
- * (missing/unpublished content type, empty space, token or network error).
- * This keeps pages rendering even when Contentful has no usable data.
- */
-export async function queryOrSeed<T>(
-  query: (client: ContentfulClientApi<undefined>) => Promise<T>,
-  fallback: T,
-): Promise<T> {
-  const client = getContentfulClient();
-  if (!client) return fallback;
-  try {
-    return await query(client);
-  } catch (err) {
-    console.error("[contentful] query failed, using seed data:", err);
-    return fallback;
-  }
-}
-
 export async function getOpportunities(): Promise<OpportunityData[]> {
   "use cache";
   cacheLife("cms");
   cacheTag("contentful");
 
-  return queryOrSeed(
-      (client) =>
-        client
-          .getEntries<OpportunitySkeleton>({
-            content_type: "opportunity",
-            limit: 100,
-            include: 10,
-          })
-          .then((r) => sortByOrder(r.items.map(mapOpportunity))),
-    seedOpportunities,
-  );
+  const client = getContentfulClient();
+  const r = await client.getEntries<OpportunitySkeleton>({
+    content_type: "opportunity",
+    limit: 100,
+    include: 10,
+  });
+  return sortByOrder(r.items.map(mapOpportunity));
 }
 
 export async function getOpportunityBySlug(
@@ -231,13 +196,12 @@ export async function getSessions(): Promise<SessionData[]> {
   cacheLife("cms");
   cacheTag("contentful");
 
-  return queryOrSeed(
-    (client) =>
-      client
-        .getEntries<SessionSkeleton>({ content_type: "session", limit: 100 })
-        .then((r) => sortByOrder(r.items.map(mapSession))),
-    seedSessions,
-  );
+  const client = getContentfulClient();
+  const r = await client.getEntries<SessionSkeleton>({
+    content_type: "session",
+    limit: 100,
+  });
+  return sortByOrder(r.items.map(mapSession));
 }
 
 export async function getSessionBySlug(
@@ -252,18 +216,14 @@ export async function getGuides(): Promise<GuideData[]> {
   cacheLife("cms");
   cacheTag("contentful");
 
-  return queryOrSeed(
-      (client) =>
-        client
-          .getEntries<GuideSkeleton>({
-            content_type: "guide",
-            limit: 100,
-            include: 10,
-            order: ["-sys.createdAt"],
-          })
-          .then((r) => r.items.map(mapGuide)),
-    seedGuides,
-  );
+  const client = getContentfulClient();
+  const r = await client.getEntries<GuideSkeleton>({
+    content_type: "guide",
+    limit: 100,
+    include: 10,
+    order: ["-sys.createdAt"],
+  });
+  return r.items.map(mapGuide);
 }
 
 export async function getGuideBySlug(
@@ -278,15 +238,14 @@ export async function getStories(): Promise<StoryData[]> {
   cacheLife("cms");
   cacheTag("contentful");
 
-  return queryOrSeed(
-    (client) =>
-      client
-        .getEntries<StorySkeleton>({ content_type: "story", limit: 100 })
-        .then((r) =>
-          r.items.filter((s) => s.fields.approved !== false).map(mapStory),
-        ),
-    seedStories,
-  );
+  const client = getContentfulClient();
+  const r = await client.getEntries<StorySkeleton>({
+    content_type: "story",
+    limit: 100,
+  });
+  return r.items
+    .filter((s) => s.fields.approved !== false)
+    .map(mapStory);
 }
 
 export async function getPartners(): Promise<PartnerData[]> {
@@ -294,13 +253,12 @@ export async function getPartners(): Promise<PartnerData[]> {
   cacheLife("cms");
   cacheTag("contentful");
 
-  return queryOrSeed(
-    (client) =>
-      client
-        .getEntries<PartnerSkeleton>({ content_type: "partner", limit: 100 })
-        .then((r) => r.items.map(mapPartner)),
-    seedPartners,
-  );
+  const client = getContentfulClient();
+  const r = await client.getEntries<PartnerSkeleton>({
+    content_type: "partner",
+    limit: 100,
+  });
+  return r.items.map(mapPartner);
 }
 
 export async function getPathSteps(): Promise<PathStepData[]> {
@@ -308,17 +266,14 @@ export async function getPathSteps(): Promise<PathStepData[]> {
   cacheLife("cms");
   cacheTag("contentful");
 
-  return queryOrSeed(
-    (client) =>
-      client
-        .getEntries<PathStepSkeleton>({ content_type: "pathStep", limit: 100 })
-        .then((r) =>
-          r.items
-            .map(mapPathStep)
-            .sort((a, b) => a.stepNumber - b.stepNumber),
-        ),
-    seedPathSteps,
-  );
+  const client = getContentfulClient();
+  const r = await client.getEntries<PathStepSkeleton>({
+    content_type: "pathStep",
+    limit: 100,
+  });
+  return r.items
+    .map(mapPathStep)
+    .sort((a, b) => a.stepNumber - b.stepNumber);
 }
 
 export async function getInterests(): Promise<InterestData[]> {
@@ -326,13 +281,12 @@ export async function getInterests(): Promise<InterestData[]> {
   cacheLife("cms");
   cacheTag("contentful");
 
-  return queryOrSeed(
-    (client) =>
-      client
-        .getEntries<InterestSkeleton>({ content_type: "interest", limit: 100 })
-        .then((r) => r.items.map(mapInterest)),
-    seedInterests,
-  );
+  const client = getContentfulClient();
+  const r = await client.getEntries<InterestSkeleton>({
+    content_type: "interest",
+    limit: 100,
+  });
+  return r.items.map(mapInterest);
 }
 
 export async function getCommunityTopics(): Promise<CommunityData[]> {
@@ -340,13 +294,12 @@ export async function getCommunityTopics(): Promise<CommunityData[]> {
   cacheLife("cms");
   cacheTag("contentful");
 
-  return queryOrSeed(
-    (client) =>
-      client
-        .getEntries<CommunitySkeleton>({ content_type: "community", limit: 100 })
-        .then((r) => r.items.map(mapCommunity)),
-    seedCommunity,
-  );
+  const client = getContentfulClient();
+  const r = await client.getEntries<CommunitySkeleton>({
+    content_type: "community",
+    limit: 100,
+  });
+  return r.items.map(mapCommunity);
 }
 
 export async function getHomepageSections(): Promise<
@@ -356,25 +309,16 @@ export async function getHomepageSections(): Promise<
   cacheLife("cms");
   cacheTag("contentful");
 
-  return queryOrSeed(
-    (client) =>
-      client
-        .getEntries<HomepageSectionSkeleton>({
-          content_type: "homepageSection",
-          limit: 100,
-          include: 10,
-        })
-        .then((r) => {
-          const map = {} as Record<
-            HomepageSectionKey,
-            HomepageSectionData | undefined
-          >;
-          for (const item of r.items) {
-            const data = mapHomepageSection(item);
-            map[data.section] = data;
-          }
-          return map;
-        }),
-    seedHomepageSections,
-  );
+  const client = getContentfulClient();
+  const r = await client.getEntries<HomepageSectionSkeleton>({
+    content_type: "homepageSection",
+    limit: 100,
+    include: 10,
+  });
+  const map = {} as Record<HomepageSectionKey, HomepageSectionData | undefined>;
+  for (const item of r.items) {
+    const data = mapHomepageSection(item);
+    map[data.section] = data;
+  }
+  return map;
 }
