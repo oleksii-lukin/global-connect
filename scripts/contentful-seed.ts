@@ -146,7 +146,7 @@ async function uploadLocalAsset(
   const fileName = path.basename(filePath);
   const upload = await client.upload.create(
     { spaceId: SPACE, environmentId: ENV },
-    { file: fileBytes },
+    { file: fileBytes.buffer.slice(fileBytes.byteOffset, fileBytes.byteOffset + fileBytes.byteLength) },
   );
   const asset = await client.asset.createWithId(base, {
     fields: {
