@@ -1,15 +1,24 @@
 import Image from "next/image";
 import Link from "next/link";
 
-const exploreLinks = ["Opportunities", "Sessions", "Guides", "Community"];
-const aboutLinks = ["Our story", "Impact", "Partners", "Contact"];
-const followLinks = ["Instagram", "LinkedIn", "Telegram", "YouTube"];
+const exploreLinks = [
+  { label: "Opportunities", href: "/opportunities" },
+  { label: "Sessions", href: "/sessions" },
+  { label: "Guides", href: "/guides" },
+  { label: "Community", href: "/community" },
+];
+const aboutLinks = [
+  { label: "Our story", href: "/about" },
+  { label: "Impact", href: "/about#impact" },
+  { label: "Partners", href: "/about#partners" },
+  { label: "Contact", href: "/about#contact" },
+];
 
 export function SiteFooter() {
   return (
     <footer className="border-t border-border/70 bg-card/40 px-6 py-16">
       <div className="mx-auto max-w-7xl">
-        <div className="grid gap-12 lg:grid-cols-[1.4fr_repeat(3,1fr)]">
+        <div className="grid gap-12 lg:grid-cols-[1.4fr_repeat(2,1fr)]">
           <div>
             <div className="flex items-center gap-2.5">
               <Image
@@ -31,7 +40,6 @@ export function SiteFooter() {
 
           <FooterColumn title="Explore" links={exploreLinks} />
           <FooterColumn title="About" links={aboutLinks} />
-          <FooterColumn title="Follow" links={followLinks} />
         </div>
 
         <div className="mt-14 flex flex-col gap-3 border-t border-border/70 pt-6 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
@@ -55,7 +63,7 @@ function FooterColumn({
   links,
 }: {
   title: string;
-  links: string[];
+  links: { label: string; href: string }[];
 }) {
   return (
     <div>
@@ -63,13 +71,13 @@ function FooterColumn({
         {title}
       </p>
       <ul className="mt-4 space-y-2.5">
-        {links.map((label) => (
-          <li key={label}>
+        {links.map((link) => (
+          <li key={link.label}>
             <a
-              href="#top"
+              href={link.href}
               className="text-sm text-foreground/80 transition-colors hover:text-foreground"
             >
-              {label}
+              {link.label}
             </a>
           </li>
         ))}

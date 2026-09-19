@@ -20,7 +20,7 @@ const NAV_LINKS = [
   { label: "Online Sessions", section: "sessions", page: "/sessions" },
   { label: "Guides", section: "guides", page: "/guides" },
   { label: "Community", section: "community", page: "/community" },
-  { label: "About", section: "about", page: "/about" },
+  { label: "About", page: "/about" },
 ];
 
 function AuthButtons({ className }: { className?: string }) {
@@ -52,7 +52,7 @@ export function SiteHeader() {
 
   const links = NAV_LINKS.map((l) => ({
     label: l.label,
-    href: isHome ? `#${l.section}` : l.page,
+    href: l.section && isHome ? `#${l.section}` : l.page,
   }));
   return (
     <header className="sticky top-0 z-50 border-b border-border/70 bg-background/80 backdrop-blur-md">
@@ -76,7 +76,7 @@ export function SiteHeader() {
           <Button
             variant="outline"
             size="xs"
-            render={<a href={isHome ? "#opportunities" : "/opportunities"} />}
+            render={<a href="/opportunities" />}
           >
             Explore opportunities
           </Button>
@@ -122,7 +122,7 @@ export function SiteHeader() {
               <Button
                 variant="outline"
                 size="sm"
-            render={<a href={isHome ? "#opportunities" : "/opportunities"} />}
+            render={<a href="/opportunities" />}
               >
                 Explore opportunities
               </Button>

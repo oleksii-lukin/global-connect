@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 import { SectionHeading } from "@/components/sections/section";
 import type { HomepageSectionData } from "@/types/models";
@@ -50,15 +51,15 @@ export function CommunitySection({
                 </li>
               ))}
             </ul>
-            <a
-              href="#join"
+            <Link
+              href="/community"
               className="group mt-10 inline-flex items-center gap-2 text-base font-medium text-foreground"
             >
               Join the community
               <span className="transition-transform duration-300 group-hover:translate-x-1">
                 →
               </span>
-            </a>
+            </Link>
           </div>
 
           <div>

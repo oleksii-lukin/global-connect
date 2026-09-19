@@ -56,7 +56,7 @@ export function HeroSection({
           )}
 
           <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-            <Button className="w-full sm:w-auto" render={<a href="#opportunities" />}>
+            <Button className="w-full sm:w-auto" render={<a href="/opportunities" />}>
               Explore opportunities <span aria-hidden="true">→</span>
             </Button>
             <Suspense

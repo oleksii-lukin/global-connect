@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import { SectionBand, SectionHeading } from "@/components/sections/section";
 import type { HomepageSectionData, InterestData } from "@/types/models";
 
@@ -28,14 +30,14 @@ export function DiscoverySection({
         ))}
       </div>
       <div className="mt-10 text-center">
-        <a
-          href="#opportunities"
+        <Link
+          href="/opportunities"
           className="group inline-flex items-center gap-2 text-base font-semibold text-foreground underline decoration-border underline-offset-8 transition-colors hover:text-accent-foreground"
         >
           Find opportunities for me
           <span className="inline-block transition-transform duration-300 group-hover:translate-x-1">
             →</span>
-        </a>
+        </Link>
       </div>
     </SectionBand>
   );

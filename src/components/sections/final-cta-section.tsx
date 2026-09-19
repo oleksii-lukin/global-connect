@@ -39,7 +39,7 @@ export function FinalCtaSection({
             className="w-full sm:w-auto"
             size="lg"
             variant="default"
-            render={<a href="#opportunities" />}
+            render={<a href="/opportunities" />}
           >
             Explore opportunities
           </Button>

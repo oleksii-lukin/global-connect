@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import { SectionHeading, CardShell } from "@/components/sections/section";
 import { Carousel } from "@/components/carousel";
 import type { HomepageSectionData, StoryData } from "@/types/models";
@@ -70,15 +72,15 @@ export function StoriesSection({
         </Carousel>
 
         <div className="mt-14 text-center">
-          <a
-            href="#"
+          <Link
+            href="/community"
             className="group inline-flex items-center gap-2 text-base font-medium text-foreground transition-colors hover:text-accent-foreground"
           >
             Share your Global Connect story
             <span className="inline-block transition-transform duration-300 group-hover:translate-x-1">
               →
             </span>
-          </a>
+          </Link>
         </div>
       </div>
     </section>
