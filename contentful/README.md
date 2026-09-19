@@ -9,6 +9,10 @@ stories, partners, path steps, interests) is stored here.
 > Prefer the dashboard + video walkthrough?
 > <https://www.contentful.com/developers/docs/tutorials/general/get-started/>
 
+> **Using the Contentful MCP server** (e.g. via opencode)? See
+> [`contentful-mcp.md`](./contentful-mcp.md) for the rules and patterns that
+> work — locale-wrapped fields, publish steps, payload limits, rich-text gotchas.
+
 ---
 
 ## 1. Create an account and a space
@@ -230,6 +234,12 @@ immediately in **Preview mode** (set `CONTENTFUL_PREVIEW_ACTIVE=true` locally).
 - **Content not appearing**: check the entries are **published** (Delivery API
   only sees published content).
 - **Stale content**: wait out the cache window, or hit the revalidate route.
+- **MCP errors** (locale-wrapped fields, payload truncation, missing
+  `content: []`, publish step): see
+  [`contentful-mcp.md`](./contentful-mcp.md#troubleshooting).
+- **`422` "table" not allowed** when publishing a guide: the `body` Rich Text
+  field is missing an `enabledNodeTypes` validation that includes `table`. See
+  [golden rule #9](./contentful-mcp.md#9-rich-text-enablednodetypes--tables-are-not-allowed-by-default).
 
 ## Migration / Export
 
