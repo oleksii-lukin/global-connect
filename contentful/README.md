@@ -144,7 +144,7 @@ What gets seeded:
 
 - 18 **Opportunity** entries (with full rich-text long descriptions + images)
 - 14 **Online Session** entries (mix of upcoming and past, some with register URLs)
-- 6 **Guide** entries (rich-text bodies with embedded images + videos)
+- 7 **Guide** entries (rich-text bodies with embedded images + videos)
 - 2 **Video** entries (YouTube embeds embedded in guide bodies)
 - 10 **Student Story** entries
 - 6 **Partner** entries

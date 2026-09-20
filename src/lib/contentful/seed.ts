@@ -12,7 +12,7 @@ import type {
   GuideData,
   VideoData,
 } from "@/types/models";
-import { BLOCKS } from "@contentful/rich-text-types";
+import { BLOCKS, INLINES } from "@contentful/rich-text-types";
 import type { Document } from "@contentful/rich-text-types";
 
 /** Seed data for populating Contentful via `pnpm contentful:seed`.
@@ -38,8 +38,27 @@ const text = (value: string): Node => ({
   data: {},
 });
 
+const marked = (value: string, marks: string[]): Node => ({
+  nodeType: "text",
+  value,
+  marks: marks.map((m) => ({ type: m })),
+  data: {},
+});
+
 const paragraph = (value: string): Node => ({
   nodeType: BLOCKS.PARAGRAPH,
+  data: {},
+  content: [text(value)],
+});
+
+const richParagraph = (...children: Node[]): Node => ({
+  nodeType: BLOCKS.PARAGRAPH,
+  data: {},
+  content: children,
+});
+
+const heading1 = (value: string): Node => ({
+  nodeType: BLOCKS.HEADING_1,
   data: {},
   content: [text(value)],
 });
@@ -49,6 +68,8 @@ const heading2 = (value: string): Node => ({
   data: {},
   content: [text(value)],
 });
+
+const hr = (): Node => ({ nodeType: BLOCKS.HR, data: {}, content: [] });
 
 const list = (items: string[]): Node => ({
   nodeType: BLOCKS.UL_LIST,
@@ -60,10 +81,54 @@ const list = (items: string[]): Node => ({
   })),
 });
 
+const orderedList = (items: string[]): Node => ({
+  nodeType: BLOCKS.OL_LIST,
+  data: {},
+  content: items.map((i) => ({
+    nodeType: BLOCKS.LIST_ITEM,
+    data: {},
+    content: [paragraph(i)],
+  })),
+});
+
+const link = (uri: string, label: string): Node => ({
+  nodeType: INLINES.HYPERLINK,
+  data: { uri },
+  content: [text(label)],
+});
+
 const quote = (value: string): Node => ({
   nodeType: BLOCKS.QUOTE,
   data: {},
   content: [paragraph(value)],
+});
+
+const costTable = (
+  headers: string[],
+  rows: string[][],
+): Node => ({
+  nodeType: BLOCKS.TABLE,
+  data: {},
+  content: [
+    {
+      nodeType: BLOCKS.TABLE_ROW,
+      data: {},
+      content: headers.map((h) => ({
+        nodeType: BLOCKS.TABLE_HEADER_CELL,
+        data: {},
+        content: [richParagraph(marked(h, ["bold"]))],
+      })),
+    },
+    ...rows.map((row) => ({
+      nodeType: BLOCKS.TABLE_ROW,
+      data: {},
+      content: row.map((cell) => ({
+        nodeType: BLOCKS.TABLE_CELL,
+        data: {},
+        content: [paragraph(cell)],
+      })),
+    })),
+  ],
 });
 
 /** Embedded image. In the bundled fallback the asset is inlined with a local
@@ -1250,6 +1315,127 @@ export const seedGuides: GuideData[] = [
       heading2("If you are rejected"),
       paragraph(
         "Most successful applicants were rejected first. Ask for feedback, fix the weak part, and apply to the next round or the next programme. Persistence beats perfection.",
+      ),
+    ),
+  },
+
+  // -----------------------------------------------------------------------
+  // Studying abroad guide
+  // -----------------------------------------------------------------------
+
+  {
+    id: "seed-guide-studying-abroad",
+    title: "How to prepare for studying abroad",
+    slug: "how-to-prepare-for-studying-abroad",
+    readTime: 10,
+    excerpt:
+      "A practical checklist for the months before you leave — paperwork, budgeting, packing and mindset.",
+    publishedAt: "2026-09-19",
+    body: doc(
+      paragraph(
+        "Studying abroad changes how you see the world and how the world sees you. But between the excitement and the departure date, there is a mountain of logistics. This guide breaks the process into manageable steps so you arrive prepared, not panicked.",
+      ),
+      image(
+        "asset-studying-abroad-1",
+        "/guides/asset-studying-abroad-1.jpg",
+        "A student with a suitcase at an airport departure gate",
+      ),
+      heading1("Before you go"),
+      richParagraph(
+        text("Your "),
+        marked("motivation letter", ["bold"]),
+        text(" and "),
+        marked("CV", ["italic"]),
+        text(
+          " are the documents most programmes ask for first. ",
+        ),
+        marked("Start early", ["underline"]),
+        text(" — "),
+        marked("deadlines", ["code"]),
+        text(" creep up faster than you expect."),
+      ),
+      heading2("The paperwork checklist"),
+      list([
+        "Passport — check validity for at least six months past your return date.",
+        "Visa — apply as soon as you receive your acceptance letter.",
+        "Insurance — most programmes require proof of health coverage.",
+        "Bank card — get a travel-friendly card with low foreign-transaction fees before you leave.",
+      ]),
+      heading2("Money matters: what studying abroad really costs"),
+      richParagraph(
+        text(
+          "Prices vary wildly between cities. Use these free tools to check real figures before you commit: ",
+        ),
+        link(
+          "https://www.numbeo.com/cost-of-living/",
+          "Numbeo Cost of Living",
+        ),
+        text(
+          " (city-by-city breakdowns of rent, groceries, transport), ",
+        ),
+        link("https://www.expatistan.com/cost-of-living", "Expatistan"),
+        text(" (side-by-side city comparisons), and "),
+        link(
+          "https://worldpopulationreview.com/country-rankings/cost-of-living-by-country",
+          "World Population Review",
+        ),
+        text(
+          " (country-level Cost of Living Index for 180+ countries).",
+        ),
+      ),
+      costTable(
+        ["City", "Studio rent / mo", "Meal (inexpensive)", "Transport pass", "Cappuccino"],
+        [
+          ["Lisbon", "~\u20AC1,100", "~\u20AC15", "~\u20AC40", "~\u20AC2.80"],
+          ["Berlin", "~\u20AC1,200", "~\u20AC13", "~\u20AC49", "~\u20AC3.50"],
+          ["Bangkok", "~$370", "~$3", "~$30", "~$2.50"],
+          ["New York", "~$3,000", "~$25", "~$127", "~$5.50"],
+        ],
+      ),
+      richParagraph(
+        text(
+          "Working example (Lisbon): rent \u20AC1,100 + groceries \u20AC250 + transport \u20AC40 + phone/utilities \u20AC120 + leisure \u20AC150 \u2248 ",
+        ),
+        marked("\u20AC1,660/month", ["bold"]),
+        text(
+          ". Always verify live figures on Numbeo or Expatistan before budgeting \u2014 prices shift year to year.",
+        ),
+      ),
+      image(
+        "asset-studying-abroad-2",
+        "/guides/asset-studying-abroad-2.jpg",
+        "A budget spreadsheet comparing living costs across cities",
+      ),
+      quote(
+        "I spent more on coffee in my first month in London than I did on transport in three months in Bangkok.",
+      ),
+      heading2("Packing, in order"),
+      orderedList([
+        "Documents first \u2014 passport, insurance, acceptance letter, printed copies of everything.",
+        "Medications and adapters \u2014 small, easy to forget, expensive to replace abroad.",
+        "Clothes last \u2014 buy locally where it is cheaper (Thailand, Vietnam, Portugal all have affordable shops).",
+      ]),
+      hr(),
+      heading2("A sample first week"),
+      richParagraph(
+        marked("Day 1: ", ["bold"]),
+        text("pick up your keys and register at the local office. "),
+        marked("Day 2: ", ["bold"]),
+        text("open a "),
+        marked("local bank account", ["underline"]),
+        text(" \u2014 it saves on fees. Day 3: "),
+        marked("buy a SIM card", ["code"]),
+        text(
+          " and set up mobile payments. Day 4\u20137: orientation, explore, and find your favourite grocery shop.",
+        ),
+      ),
+      image(
+        "asset-studying-abroad-3",
+        "/guides/asset-studying-abroad-3.jpg",
+        "A student exploring a new city during their first week abroad",
+      ),
+      quote(
+        "The first week feels overwhelming. By week three, you have a routine and a favourite cafe. Trust the process.",
       ),
     ),
   },
