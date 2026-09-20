@@ -77,6 +77,7 @@ defines 10 content types:
 | `Opportunity` | exchange / scholarship / conference / volunteering listings |
 | `Online Session` | speaking clubs, workshops, sessions |
 | `Guide` | how-to articles with rich-text body |
+| `Video` | external video (YouTube) embedded inside guide bodies |
 | `Student Story` | testimonials on the homepage |
 | `Partner` | organisations in the "Built with people who believe…" row |
 | `Path Step` | the 5-step "How Global Connect works" section |
@@ -143,7 +144,8 @@ What gets seeded:
 
 - 18 **Opportunity** entries (with full rich-text long descriptions + images)
 - 14 **Online Session** entries (mix of upcoming and past, some with register URLs)
-- 6 **Guide** entries (rich-text bodies with embedded images)
+- 6 **Guide** entries (rich-text bodies with embedded images + videos)
+- 2 **Video** entries (YouTube embeds embedded in guide bodies)
 - 10 **Student Story** entries
 - 6 **Partner** entries
 - 5 **Path Step** entries (Discover, Understand, Prepare, Apply, Grow)

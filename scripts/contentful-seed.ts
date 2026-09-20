@@ -16,6 +16,7 @@ import {
   seedSessions,
   seedStories,
   seedGuides,
+  seedVideos,
 } from "../src/lib/contentful/seed";
 
 config({ path: ".env.local" });
@@ -87,6 +88,14 @@ function toContentfulBody(doc: Document | undefined): Document | undefined {
         if (target?.sys?.id) {
           node.data.target = {
             sys: { type: "Link", linkType: "Asset", id: target.sys.id },
+          };
+        }
+      }
+      if (node.nodeType === BLOCKS.EMBEDDED_ENTRY) {
+        const target = node.data.target as { sys?: { id?: string } } | undefined;
+        if (target?.sys?.id) {
+          node.data.target = {
+            sys: { type: "Link", linkType: "Entry", id: target.sys.id },
           };
         }
       }
@@ -216,6 +225,7 @@ async function main(): Promise<void> {
     "community",
     "city",
     "homepageSection",
+    "video",
   ];
 
   // Content types must be published before their entries appear in the Delivery API.
@@ -264,6 +274,14 @@ async function main(): Promise<void> {
       online: { "en-US": s.online },
       upcoming: { "en-US": s.upcoming },
       order: { "en-US": s.order },
+    });
+  }
+
+  for (const v of seedVideos) {
+    await upsert("video", v.id, {
+      title: { "en-US": v.title },
+      videoUrl: { "en-US": v.videoUrl },
+      ...(v.caption ? { caption: { "en-US": v.caption } } : {}),
     });
   }
 

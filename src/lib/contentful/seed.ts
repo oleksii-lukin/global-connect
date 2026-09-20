@@ -10,6 +10,7 @@ import type {
   SessionData,
   StoryData,
   GuideData,
+  VideoData,
 } from "@/types/models";
 import { BLOCKS } from "@contentful/rich-text-types";
 import type { Document } from "@contentful/rich-text-types";
@@ -100,6 +101,23 @@ const doc = (...blocks: Node[]): Document =>
 
 const guideImage = (slug: string, alt: string): Node =>
   image(`asset-${slug}`, `/guides/asset-${slug}.jpg`, alt);
+
+/** Embedded video entry. The seeder rewrites `data.target` to an Entry Link
+ *  when creating into the CMS. */
+const video = (entryId: string, url: string, title: string, caption?: string): Node => ({
+  nodeType: BLOCKS.EMBEDDED_ENTRY,
+  data: {
+    target: {
+      sys: { id: entryId, type: "Entry", linkType: "Entry" },
+      fields: {
+        title: { "en-US": title },
+        videoUrl: { "en-US": url },
+        ...(caption ? { caption: { "en-US": caption } } : {}),
+      },
+    },
+  },
+  content: [],
+});
 
 // ---------------------------------------------------------------------------
 // Opportunities
@@ -1137,6 +1155,12 @@ export const seedGuides: GuideData[] = [
       paragraph(
         "Interviews reward preparation more than raw talent. The candidates who seem natural are usually the ones who rehearsed the boring parts until they were automatic.",
       ),
+      video(
+        "seed-video-interview-prep",
+        "https://www.youtube.com/watch?v=jNQXAC9IVRw",
+        "Interview Preparation Guide",
+        "A quick primer on what to expect and how to prepare for your next interview.",
+      ),
       guideImage(
         "how-to-prepare-for-an-interview",
         "A candidate preparing for a job interview",
@@ -1166,6 +1190,12 @@ export const seedGuides: GuideData[] = [
     body: doc(
       paragraph(
         "With no work history, your CV is proof of how you think and follow through. Projects, volunteering and school work count — frame them as things you owned and finished.",
+      ),
+      video(
+        "seed-video-cv-tips",
+        "https://www.youtube.com/watch?v=lv8TasO-EV4",
+        "CV Writing Tips",
+        "Watch this walkthrough on building a clean, effective CV from scratch.",
       ),
       guideImage(
         "how-to-build-your-first-cv",
@@ -1222,6 +1252,27 @@ export const seedGuides: GuideData[] = [
         "Most successful applicants were rejected first. Ask for feedback, fix the weak part, and apply to the next round or the next programme. Persistence beats perfection.",
       ),
     ),
+  },
+];
+
+// ---------------------------------------------------------------------------
+// Videos (embedded in guide bodies)
+// ---------------------------------------------------------------------------
+
+export const seedVideos: VideoData[] = [
+  {
+    id: "seed-video-cv-tips",
+    title: "CV Writing Tips",
+    videoUrl: "https://www.youtube.com/watch?v=lv8TasO-EV4",
+    caption:
+      "Watch this walkthrough on building a clean, effective CV from scratch.",
+  },
+  {
+    id: "seed-video-interview-prep",
+    title: "Interview Preparation Guide",
+    videoUrl: "https://www.youtube.com/watch?v=jNQXAC9IVRw",
+    caption:
+      "A quick primer on what to expect and how to prepare for your next interview.",
   },
 ];
 

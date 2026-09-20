@@ -81,6 +81,13 @@ export interface CommunityData {
   members: string;
 }
 
+export interface VideoData {
+  id: string;
+  title: string;
+  videoUrl: string;
+  caption?: string;
+}
+
 export interface CityData {
   id: string;
   initials: string;

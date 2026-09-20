@@ -688,6 +688,44 @@
           "omitted": false
         }
       ]
+    },
+    {
+      "sys": { "id": "video", "type": "ContentType" },
+      "name": "Video",
+      "description": "An external video (YouTube) embedded inside a guide's rich-text body.",
+      "displayField": "title",
+      "fields": [
+        {
+          "id": "title",
+          "name": "Title",
+          "type": "Symbol",
+          "localized": false,
+          "required": true,
+          "validations": [],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "videoUrl",
+          "name": "Video URL",
+          "type": "Symbol",
+          "localized": false,
+          "required": true,
+          "validations": [{ "regexp": { "pattern": "^(https?://)?(www\\.)?(youtube\\.com|youtu\\.be)/.+", "flags": "" } }],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "caption",
+          "name": "Caption",
+          "type": "Symbol",
+          "localized": false,
+          "required": false,
+          "validations": [],
+          "disabled": false,
+          "omitted": false
+        }
+      ]
     }
   ],
   "editorInterfaces": []

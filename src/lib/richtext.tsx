@@ -8,6 +8,14 @@ type AssetFile = {
   contentType?: string;
 };
 
+const YOUTUBE_RE =
+  /(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/|live\/)|youtu\.be\/)([A-Za-z0-9_-]{11})/;
+
+function youtubeEmbedUrl(url: string): string | null {
+  const m = url.match(YOUTUBE_RE);
+  return m ? `https://www.youtube-nocookie.com/embed/${m[1]}` : null;
+}
+
 function assetUrl(
   target: unknown,
 ): { url: string; alt: string; width?: number; height?: number } | null {
@@ -68,7 +76,60 @@ export function RichText({ document }: { document: RichTextDocument }) {
               </a>
             );
           },
-          [BLOCKS.EMBEDDED_ENTRY]: (_node, children) => <>{children}</>,
+          [BLOCKS.EMBEDDED_ENTRY]: (node, children) => {
+            const entry = node.data.target as
+              | { sys?: { contentType?: { sys?: { id?: string } } }; fields?: Record<string, unknown> }
+              | undefined;
+            const typeId = entry?.sys?.contentType?.sys?.id;
+            if (typeId === "video" && entry?.fields) {
+              const rawUrl =
+                typeof entry.fields.videoUrl === "string"
+                  ? entry.fields.videoUrl
+                  : typeof entry.fields.videoUrl === "object" &&
+                      entry.fields.videoUrl !== null &&
+                      "en-US" in (entry.fields.videoUrl as Record<string, unknown>)
+                    ? (entry.fields.videoUrl as Record<string, string>)["en-US"]
+                    : "";
+              const embedSrc = youtubeEmbedUrl(rawUrl);
+              if (!embedSrc) return null;
+              const title =
+                typeof entry.fields.title === "string"
+                  ? entry.fields.title
+                  : typeof entry.fields.title === "object" &&
+                      entry.fields.title !== null &&
+                      "en-US" in (entry.fields.title as Record<string, unknown>)
+                    ? (entry.fields.title as Record<string, string>)["en-US"]
+                    : "Video";
+              const caption =
+                typeof entry.fields.caption === "string"
+                  ? entry.fields.caption
+                  : typeof entry.fields.caption === "object" &&
+                      entry.fields.caption !== null &&
+                      "en-US" in (entry.fields.caption as Record<string, unknown>)
+                    ? (entry.fields.caption as Record<string, string>)["en-US"]
+                    : undefined;
+              return (
+                <figure className="my-8">
+                  <div className="aspect-video relative w-full overflow-hidden rounded-2xl">
+                    <iframe
+                      src={embedSrc}
+                      title={title}
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      allowFullScreen
+                      loading="lazy"
+                      className="absolute inset-0 h-full w-full"
+                    />
+                  </div>
+                  {caption && (
+                    <figcaption className="mt-3 text-center text-sm text-muted-foreground">
+                      {caption}
+                    </figcaption>
+                  )}
+                </figure>
+              );
+            }
+            return <>{children}</>;
+          },
         },
       })}
     </div>

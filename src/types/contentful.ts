@@ -132,3 +132,14 @@ export type HomepageSectionSkeleton = EntrySkeletonType<
 >;
 
 export type HomepageSection = Entry<HomepageSectionSkeleton, undefined, "en-US">;
+
+export type VideoSkeleton = EntrySkeletonType<
+  {
+    title: EntryFieldTypes.Symbol<string>;
+    videoUrl: EntryFieldTypes.Symbol<string>;
+    caption?: EntryFieldTypes.Symbol<string>;
+  },
+  "video"
+>;
+
+export type Video = Entry<VideoSkeleton, undefined, "en-US">;

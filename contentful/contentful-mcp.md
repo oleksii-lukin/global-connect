@@ -470,6 +470,64 @@ Reference an uploaded asset by its Contentful `sys.id`:
 
 ---
 
+## Embedding YouTube videos in guides
+
+The `video` content type acts as an external-asset wrapper for YouTube embeds.
+Create a video entry, then embed it in a guide body via `embedded-entry-block`.
+
+### Video content type
+
+| Field | Type | Required | Notes |
+| --- | --- | --- | --- |
+| `title` | Symbol | yes | Display name; also shown as the iframe `title` |
+| `videoUrl` | Symbol | yes | YouTube URL; validated against `^(https?://)?(www\.)?(youtube\.com\|youtu\.be)/.+` |
+| `caption` | Symbol | no | Caption shown below the video |
+
+### Creating a video entry
+
+```jsonc
+contentful_create_entry({
+  spaceId: "k91pamz6ke36",
+  environmentId: "master",
+  contentTypeId: "video",
+  fields: {
+    title: { "en-US": "CV Writing Tips" },
+    videoUrl: { "en-US": "https://www.youtube.com/watch?v=lv8TasO-EV4" },
+    caption: { "en-US": "A walkthrough of building a clean CV." }
+  }
+})
+```
+
+Then publish the entry.
+
+### Embedding in a guide body
+
+Add an `embedded-entry-block` node to the guide's Rich Text body, referencing
+the video entry by its `sys.id`:
+
+```json
+{
+  "nodeType": "embedded-entry-block",
+  "data": {
+    "target": {
+      "sys": {
+        "type": "Link",
+        "linkType": "Entry",
+        "id": "VIDEO_ENTRY_ID"
+      }
+    }
+  },
+  "content": []
+}
+```
+
+**Critical:** always include `"content": []` — see golden rule #6.
+
+The guide body's default `enabledNodeTypes` already includes
+`embedded-entry-block`, so no content-type change is needed.
+
+---
+
 ## Tool reference (MCP calls at a glance)
 
 | Operation | Tool | Key params | Notes |
@@ -557,6 +615,7 @@ from older versions.
 | Rich-text image not rendering | Asset reference uses wrong ID or asset not published | Use the `sys.id` returned by `contentful_upload_asset`; ensure the asset is published |
 | `422 Validation error: "table" is not one of the allowed node types` | Content type Rich Text field missing `table` in `enabledNodeTypes` | Add `enabledNodeTypes` validation to the content type (see golden rule #9) |
 | `422 Validation error: ambiguous node types` | `enabledNodeTypes` and `enabledMarks` combined in one validation object | Split into two separate validation objects (see golden rule #9) |
+| Video not rendering in guide | Video entry not published, or wrong entry ID in `embedded-entry-block` | Ensure the video entry is published; verify the `sys.id` matches |
 
 ---
 
