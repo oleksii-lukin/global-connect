@@ -15,9 +15,9 @@ import {
   seedSessions,
   seedStories,
   seedGuides,
-  seedSiteSettings,
   seedVideos,
 } from "../src/lib/contentful/seed";
+import { FALLBACK_COMMUNITY_URL } from "../src/lib/community";
 
 config({ path: ".env.local" });
 config({ path: ".env" });
@@ -366,14 +366,14 @@ async function main(): Promise<void> {
       const entry = await client.entry.get({ ...base, entryId: settingsId });
       const updated = await client.entry.update(
         { ...base, entryId: settingsId },
-        { ...entry, fields: { communityUrl: { "en-US": "https://t.me/globalconnect" } } },
+        { ...entry, fields: { communityUrl: { "en-US": FALLBACK_COMMUNITY_URL } } },
       );
       await client.entry.publish({ ...base, entryId: settingsId }, updated);
       console.log("updated siteSettings", settingsId);
     } catch {
       const created = await client.entry.createWithId(
         { ...base, entryId: settingsId, contentTypeId: "siteSettings" },
-        { fields: { communityUrl: { "en-US": "https://t.me/globalconnect" } } },
+        { fields: { communityUrl: { "en-US": FALLBACK_COMMUNITY_URL } } },
       );
       await client.entry.publish({ ...base, entryId: settingsId }, created);
       console.log("created siteSettings", settingsId);

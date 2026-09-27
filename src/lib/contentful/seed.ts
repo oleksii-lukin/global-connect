@@ -103,33 +103,6 @@ const quote = (value: string): Node => ({
   content: [paragraph(value)],
 });
 
-const costTable = (
-  headers: string[],
-  rows: string[][],
-): Node => ({
-  nodeType: BLOCKS.TABLE,
-  data: {},
-  content: [
-    {
-      nodeType: BLOCKS.TABLE_ROW,
-      data: {},
-      content: headers.map((h) => ({
-        nodeType: BLOCKS.TABLE_HEADER_CELL,
-        data: {},
-        content: [richParagraph(marked(h, ["bold"]))],
-      })),
-    },
-    ...rows.map((row) => ({
-      nodeType: BLOCKS.TABLE_ROW,
-      data: {},
-      content: row.map((cell) => ({
-        nodeType: BLOCKS.TABLE_CELL,
-        data: {},
-        content: [paragraph(cell)],
-      })),
-    })),
-  ],
-});
 
 /** Embedded image. In the bundled fallback the asset is inlined with a local
  *  URL so it renders without Contentful; the seeder rewrites `data.target` to

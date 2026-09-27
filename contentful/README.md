@@ -70,7 +70,7 @@ A **content type** is like a database table (e.g. `Opportunity`), a **field** is
 column (e.g. `funding`), and an **entry** is a row (a specific opportunity).
 
 The model for this site lives in [`content-model.json`](./content-model.json). It
-defines 12 content types:
+defines 11 content types:
 
 | Content type | Purpose |
 | --- | --- |
