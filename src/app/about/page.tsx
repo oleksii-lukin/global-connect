@@ -4,7 +4,7 @@ import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { PageHeader } from "@/components/page-header";
 import { PartnersSection } from "@/components/sections/partners-section";
-import { getHomepageSections, getPartners, getStories } from "@/lib/contentful/queries";
+import { getHomepageSections, getPartners, getSiteSettings, getStories } from "@/lib/contentful/queries";
 import { StoriesSection } from "@/components/sections/stories-section";
 
 export const metadata: Metadata = {
@@ -14,10 +14,11 @@ export const metadata: Metadata = {
 };
 
 export default async function AboutPage() {
-  const [partners, stories, homepageSections] = await Promise.all([
+  const [partners, stories, homepageSections, siteSettings] = await Promise.all([
     getPartners(),
     getStories(),
     getHomepageSections(),
+    getSiteSettings(),
   ]);
 
   return (
@@ -43,7 +44,7 @@ export default async function AboutPage() {
         </div>
 
         {homepageSections.stories && homepageSections.stories.enabled !== false && (
-          <StoriesSection stories={stories} config={homepageSections.stories} />
+          <StoriesSection stories={stories} config={homepageSections.stories} communityUrl={siteSettings.communityUrl} />
         )}
 
         {homepageSections.partners && homepageSections.partners.enabled !== false && (

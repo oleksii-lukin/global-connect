@@ -1,13 +1,12 @@
-import { Suspense } from "react";
-import { Show, SignInButton } from "@clerk/nextjs";
-
 import { Button } from "@/components/ui/button";
 import type { HomepageSectionData } from "@/types/models";
 
 export function FinalCtaSection({
   config,
+  communityUrl,
 }: {
   config?: HomepageSectionData;
+  communityUrl: string;
 }) {
   return (
     <section
@@ -43,33 +42,20 @@ export function FinalCtaSection({
           >
             Explore opportunities
           </Button>
-          <Suspense
-            fallback={
-              <Button className="w-full sm:w-auto" size="lg" variant="outline" disabled>
-                Join Global Connect
-              </Button>
+          <Button
+            className="w-full sm:w-auto"
+            size="lg"
+            variant="outline"
+            render={
+              <a
+                href={communityUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+              />
             }
           >
-            <Show
-              when="signed-out"
-              fallback={
-                <Button
-                  className="w-full sm:w-auto"
-                  size="lg"
-                  variant="outline"
-                  render={<a href="/community" />}
-                >
-                  Join Global Connect
-                </Button>
-              }
-            >
-              <SignInButton mode="modal">
-                <Button className="w-full sm:w-auto" size="lg" variant="outline">
-                  Join Global Connect
-                </Button>
-              </SignInButton>
-            </Show>
-          </Suspense>
+            Join Global Connect
+          </Button>
         </div>
       </div>
     </section>

@@ -8,7 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
-import { getSessions } from "@/lib/contentful/queries";
+import { getSessions, getSiteSettings } from "@/lib/contentful/queries";
 
 export async function generateStaticParams() {
   const sessions = await getSessions();
@@ -31,7 +31,10 @@ export async function generateMetadata({
 
 async function SessionContent({ params }: { params: { slug: string } }) {
   const { slug } = await params;
-  const sessions = await getSessions();
+  const [sessions, siteSettings] = await Promise.all([
+    getSessions(),
+    getSiteSettings(),
+  ]);
   const session = sessions.find((s) => s.slug === slug);
 
   if (!session) notFound();
@@ -94,7 +97,16 @@ async function SessionContent({ params }: { params: { slug: string } }) {
             Register for this session
           </Button>
         ) : (
-          <Button size="lg" render={<Link href="/community" />}>
+          <Button
+            size="lg"
+            render={
+              <a
+                href={siteSettings.communityUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+              />
+            }
+          >
             Join to register
           </Button>
         )}

@@ -1,6 +1,5 @@
 import type {
   CityData,
-  CommunityData,
   HomepageSectionData,
   HomepageSectionKey,
   InterestData,
@@ -8,6 +7,7 @@ import type {
   PartnerData,
   PathStepData,
   SessionData,
+  SiteSettingsData,
   StoryData,
   GuideData,
   VideoData,
@@ -1383,14 +1383,17 @@ export const seedGuides: GuideData[] = [
           " (country-level Cost of Living Index for 180+ countries).",
         ),
       ),
-      costTable(
-        ["City", "Studio rent / mo", "Meal (inexpensive)", "Transport pass", "Cappuccino"],
-        [
-          ["Lisbon", "~\u20AC1,100", "~\u20AC15", "~\u20AC40", "~\u20AC2.80"],
-          ["Berlin", "~\u20AC1,200", "~\u20AC13", "~\u20AC49", "~\u20AC3.50"],
-          ["Bangkok", "~$370", "~$3", "~$30", "~$2.50"],
-          ["New York", "~$3,000", "~$25", "~$127", "~$5.50"],
-        ],
+      paragraph(
+        "Cost comparison — Lisbon: rent \u20AC1,100/mo, meals \u20AC15, transport \u20AC40, cappuccino \u20AC2.80.",
+      ),
+      paragraph(
+        "Cost comparison — Berlin: rent \u20AC1,200/mo, meals \u20AC13, transport \u20AC49, cappuccino \u20AC3.50.",
+      ),
+      paragraph(
+        "Cost comparison — Bangkok: rent ~$370/mo, meals ~$3, transport ~$30, cappuccino ~$2.50.",
+      ),
+      paragraph(
+        "Cost comparison — New York: rent ~$3,000/mo, meals ~$25, transport ~$127, cappuccino ~$5.50.",
       ),
       richParagraph(
         text(
@@ -1618,17 +1621,8 @@ export const seedInterests: InterestData[] = [
 // Community topics (shown on the Community page)
 // ---------------------------------------------------------------------------
 
-export const seedCommunity: CommunityData[] = [
-  { id: "seed-community-travel", emoji: "🌍", label: "Travel & exchanges", members: "1,240 members" },
-  { id: "seed-community-studying", emoji: "🎓", label: "Studying abroad", members: "980 members" },
-  { id: "seed-community-speaking", emoji: "🎤", label: "Speaking clubs", members: "760 members" },
-  { id: "seed-community-tech", emoji: "💻", label: "Technology & AI", members: "540 members" },
-  { id: "seed-community-volunteering", emoji: "🤝", label: "Volunteering", members: "610 members" },
-  { id: "seed-community-scholarships", emoji: "🎓", label: "Scholarships", members: "830 members" },
-  { id: "seed-community-entrepreneurship", emoji: "🚀", label: "Entrepreneurship", members: "420 members" },
-  { id: "seed-community-research", emoji: "🧠", label: "Research", members: "290 members" },
-  { id: "seed-community-competitions", emoji: "🏆", label: "Competitions", members: "510 members" },
-  { id: "seed-community-climate", emoji: "🌱", label: "Climate & Sustainability", members: "370 members" },
+export const seedSiteSettings: SiteSettingsData[] = [
+  { communityUrl: "https://t.me/globalconnect" },
 ];
 
 // ---------------------------------------------------------------------------

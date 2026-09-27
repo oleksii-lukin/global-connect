@@ -5,8 +5,6 @@ import { getContentfulClient } from "./client";
 import type {
   City,
   CitySkeleton,
-  Community,
-  CommunitySkeleton,
   Guide,
   GuideSkeleton,
   HomepageSection,
@@ -21,12 +19,13 @@ import type {
   PathStepSkeleton,
   Session,
   SessionSkeleton,
+  SiteSettings,
+  SiteSettingsSkeleton,
   Story,
   StorySkeleton,
 } from "@/types/contentful";
 import type {
   CityData,
-  CommunityData,
   GuideData,
   HomepageSectionData,
   HomepageSectionKey,
@@ -35,8 +34,10 @@ import type {
   PartnerData,
   PathStepData,
   SessionData,
+  SiteSettingsData,
   StoryData,
 } from "@/types/models";
+import { FALLBACK_COMMUNITY_URL } from "@/lib/community";
 
 type ResolvedAssetLink =
   | UnresolvedLink<"Asset">
@@ -146,16 +147,6 @@ function mapInterest(entry: Interest): InterestData {
     id: entry.sys.id,
     label: fields.label,
     emoji: fields.emoji ?? "✨",
-  };
-}
-
-function mapCommunity(entry: Community): CommunityData {
-  const fields = entry.fields;
-  return {
-    id: entry.sys.id,
-    emoji: fields.emoji ?? "✨",
-    label: fields.label,
-    members: fields.members ?? "",
   };
 }
 
@@ -302,17 +293,23 @@ export async function getInterests(): Promise<InterestData[]> {
   return r.items.map(mapInterest);
 }
 
-export async function getCommunityTopics(): Promise<CommunityData[]> {
+export async function getSiteSettings(): Promise<SiteSettingsData> {
   "use cache";
   cacheLife("cms");
   cacheTag("contentful");
 
   const client = getContentfulClient();
-  const r = await client.getEntries<CommunitySkeleton>({
-    content_type: "community",
-    limit: 100,
+  const r = await client.getEntries<SiteSettingsSkeleton>({
+    content_type: "siteSettings",
+    limit: 1,
+    order: ["sys.createdAt"],
   });
-  return r.items.map(mapCommunity);
+  const entry = r.items[0];
+  const url = entry?.fields.communityUrl;
+  return {
+    communityUrl:
+      url && url.startsWith("https://") ? url : FALLBACK_COMMUNITY_URL,
+  };
 }
 
 export async function getCities(): Promise<CityData[]> {

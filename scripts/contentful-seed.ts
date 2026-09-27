@@ -7,7 +7,6 @@ import { BLOCKS } from "@contentful/rich-text-types";
 import type { Document } from "@contentful/rich-text-types";
 import {
   seedCities,
-  seedCommunity,
   seedHomepageSections,
   seedInterests,
   seedOpportunities,
@@ -16,6 +15,7 @@ import {
   seedSessions,
   seedStories,
   seedGuides,
+  seedSiteSettings,
   seedVideos,
 } from "../src/lib/contentful/seed";
 
@@ -189,7 +189,7 @@ async function upsert(
   type: string,
   id: string,
   fields: Record<string, Record<"en-US", unknown>>,
-): Promise<void> {
+): Promise<boolean> {
   const base = { spaceId: SPACE, environmentId: ENV };
   try {
     const existing = await client.entry.get({ ...base, entryId: id });
@@ -199,21 +199,31 @@ async function upsert(
     );
     await client.entry.publish({ ...base, entryId: id }, updated);
     console.log("updated", type, id);
-    return;
+    return true;
   } catch (err) {
     const e = err as { sys?: { id?: string }; name?: string } | undefined;
-    if (e?.sys?.id !== "NotFound" && e?.name !== "NotFound") throw err;
+    if (e?.sys?.id !== "NotFound" && e?.name !== "NotFound") {
+      console.error(`✗ ${type} ${id}:`, err);
+      return false;
+    }
   }
-  const created = await client.entry.createWithId(
-    { ...base, entryId: id, contentTypeId: type },
-    { fields },
-  );
-  await client.entry.publish({ ...base, entryId: id }, created);
-  console.log("created", type, id);
+  try {
+    const created = await client.entry.createWithId(
+      { ...base, entryId: id, contentTypeId: type },
+      { fields },
+    );
+    await client.entry.publish({ ...base, entryId: id }, created);
+    console.log("created", type, id);
+    return true;
+  } catch (err) {
+    console.error(`✗ ${type} ${id}:`, err);
+    return false;
+  }
 }
 
 async function main(): Promise<void> {
   const base = { spaceId: SPACE, environmentId: ENV };
+  const failures: string[] = [];
   const CONTENT_TYPE_IDS = [
     "opportunity",
     "session",
@@ -222,7 +232,7 @@ async function main(): Promise<void> {
     "partner",
     "pathStep",
     "interest",
-    "community",
+    "siteSettings",
     "city",
     "homepageSection",
     "video",
@@ -244,7 +254,7 @@ async function main(): Promise<void> {
     for (const assetId of collectAssetIds(o.longDescription)) {
       await uploadAsset(assetId, o.title);
     }
-    await upsert("opportunity", o.id, {
+    const ok = await upsert("opportunity", o.id, {
       title: { "en-US": o.title },
       slug: { "en-US": o.slug },
       country: { "en-US": o.country },
@@ -261,10 +271,11 @@ async function main(): Promise<void> {
         ? { longDescription: { "en-US": toContentfulBody(o.longDescription) } }
         : {}),
     });
+    if (!ok) failures.push(`opportunity:${o.id}`);
   }
 
   for (const s of seedSessions) {
-    await upsert("session", s.id, {
+    const ok = await upsert("session", s.id, {
       title: { "en-US": s.title },
       slug: { "en-US": s.slug },
       icon: { "en-US": s.icon },
@@ -275,21 +286,23 @@ async function main(): Promise<void> {
       upcoming: { "en-US": s.upcoming },
       order: { "en-US": s.order },
     });
+    if (!ok) failures.push(`session:${s.id}`);
   }
 
   for (const v of seedVideos) {
-    await upsert("video", v.id, {
+    const ok = await upsert("video", v.id, {
       title: { "en-US": v.title },
       videoUrl: { "en-US": v.videoUrl },
       ...(v.caption ? { caption: { "en-US": v.caption } } : {}),
     });
+    if (!ok) failures.push(`video:${v.id}`);
   }
 
   for (const g of seedGuides) {
     for (const assetId of collectAssetIds(g.body)) {
       await uploadAsset(assetId, g.title);
     }
-    await upsert("guide", g.id, {
+    const ok = await upsert("guide", g.id, {
       title: { "en-US": g.title },
       slug: { "en-US": g.slug },
       readTime: { "en-US": g.readTime },
@@ -297,51 +310,83 @@ async function main(): Promise<void> {
       body: { "en-US": toContentfulBody(g.body) },
       ...(g.publishedAt ? { publishedAt: { "en-US": g.publishedAt } } : {}),
     });
+    if (!ok) failures.push(`guide:${g.id}`);
   }
 
   for (const st of seedStories) {
-    await upsert("story", st.id, {
+    const ok = await upsert("story", st.id, {
       quote: { "en-US": st.quote },
       name: { "en-US": st.name },
       location: { "en-US": st.location },
       role: { "en-US": st.role },
       approved: { "en-US": true },
     });
+    if (!ok) failures.push(`story:${st.id}`);
   }
 
   for (const p of seedPartners) {
-    await upsert("partner", p.id, { name: { "en-US": p.name } });
+    const ok = await upsert("partner", p.id, { name: { "en-US": p.name } });
+    if (!ok) failures.push(`partner:${p.id}`);
   }
 
   for (const s of seedPathSteps) {
-    await upsert("pathStep", s.id, {
+    const ok = await upsert("pathStep", s.id, {
       stepNumber: { "en-US": s.stepNumber },
       title: { "en-US": s.title },
       description: { "en-US": s.description },
     });
+    if (!ok) failures.push(`pathStep:${s.id}`);
   }
 
-  for (const i of seedInterests) {
-    await upsert("interest", i.id, {
-      label: { "en-US": i.label },
-      emoji: { "en-US": i.emoji },
-    });
-  }
-
-  for (const c of seedCommunity) {
-    await upsert("community", c.id, {
-      emoji: { "en-US": c.emoji },
+  for (const c of seedInterests) {
+    const ok = await upsert("interest", c.id, {
       label: { "en-US": c.label },
-      members: { "en-US": c.members },
+      emoji: { "en-US": c.emoji },
     });
+    if (!ok) failures.push(`interest:${c.id}`);
+  }
+
+  // Site Settings: reuse existing singleton, create "seed-site-settings" only if none exists
+  {
+    const base = { spaceId: SPACE, environmentId: ENV };
+    // Try the known IDs first, then fall back to creating with the standard seed ID
+    const candidateIds = ["seed-site-settings", "cfKUwgvtwk17fFhbVxHP6"];
+    let settingsId: string | undefined;
+    for (const id of candidateIds) {
+      try {
+        await client.entry.get({ ...base, entryId: id });
+        settingsId = id;
+        break;
+      } catch {
+        // not found
+      }
+    }
+    if (!settingsId) settingsId = "seed-site-settings";
+    try {
+      const entry = await client.entry.get({ ...base, entryId: settingsId });
+      const updated = await client.entry.update(
+        { ...base, entryId: settingsId },
+        { ...entry, fields: { communityUrl: { "en-US": "https://t.me/globalconnect" } } },
+      );
+      await client.entry.publish({ ...base, entryId: settingsId }, updated);
+      console.log("updated siteSettings", settingsId);
+    } catch {
+      const created = await client.entry.createWithId(
+        { ...base, entryId: settingsId, contentTypeId: "siteSettings" },
+        { fields: { communityUrl: { "en-US": "https://t.me/globalconnect" } } },
+      );
+      await client.entry.publish({ ...base, entryId: settingsId }, created);
+      console.log("created siteSettings", settingsId);
+    }
   }
 
   for (const c of seedCities) {
-    await upsert("city", c.id, {
+    const ok = await upsert("city", c.id, {
       initials: { "en-US": c.initials },
       city: { "en-US": c.city },
       order: { "en-US": c.order },
     });
+    if (!ok) failures.push(`city:${c.id}`);
   }
 
   // Homepage sections — upload local images then upsert entries
@@ -390,10 +435,15 @@ async function main(): Promise<void> {
         };
       }
     }
-    await upsert("homepageSection", s.id, fields);
+    const ok = await upsert("homepageSection", s.id, fields);
+    if (!ok) failures.push(`homepageSection:${s.id}`);
   }
 
   console.log("Seeding complete.");
+  if (failures.length > 0) {
+    console.error(`\n${failures.length} entries failed to seed.`);
+    process.exit(1);
+  }
 }
 
 main().catch((err) => {

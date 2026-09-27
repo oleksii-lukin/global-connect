@@ -11,7 +11,7 @@ youth-opportunity site, built CMS-first with **Contentful** and auth with
 | Framework | Next.js 16 (App Router, React 19, TypeScript)             |
 | Styling   | Tailwind v4 + [shadcn/ui](https://ui.shadcn.com) (Base UI) |
 | CMS       | Contentful (Delivery + Preview API)                       |
-| Auth      | Clerk (sign-in/sign-up to join the community)             |
+| Auth      | Clerk (sign-in/sign-up for community access)              |
 | Caching   | SSG + ISR via Cache Components (`cacheLife` / `cacheTag`) |
 | Quality   | ESLint, `tsc --noEmit`, [React Doctor](https://react-doctor.com) |
 
@@ -58,7 +58,7 @@ pnpm contentful:codegen# generate TS types from your Contentful content model
 ```
 src/
   app/                    # routes (page.tsx per route)
-    (sections on the home page) + /opportunities, /sessions, /guides + /community, /about
+    (sections on the home page) + /opportunities, /sessions, /guides, /about
   components/
     sections/             # homepage section components
     ui/                   # shadcn/ui primitives

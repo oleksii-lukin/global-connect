@@ -1,5 +1,3 @@
-import Link from "next/link";
-
 import { SectionHeading, CardShell } from "@/components/sections/section";
 import { Carousel } from "@/components/carousel";
 import type { HomepageSectionData, StoryData } from "@/types/models";
@@ -14,9 +12,11 @@ const dotColors = ["bg-lavender", "bg-pastel-blue", "bg-sage"];
 export function StoriesSection({
   stories,
   config,
+  communityUrl,
 }: {
   stories: StoryData[];
   config?: HomepageSectionData;
+  communityUrl: string;
 }) {
   return (
     <section className="relative overflow-hidden bg-background px-6 py-24 sm:py-32">
@@ -72,15 +72,17 @@ export function StoriesSection({
         </Carousel>
 
         <div className="mt-14 text-center">
-          <Link
-            href="/community"
+          <a
+            href={communityUrl}
+            target="_blank"
+            rel="noopener noreferrer"
             className="group inline-flex items-center gap-2 text-base font-medium text-foreground transition-colors hover:text-accent-foreground"
           >
             Share your Global Connect story
             <span className="inline-block transition-transform duration-300 group-hover:translate-x-1">
-              →
+              &rarr;
             </span>
-          </Link>
+          </a>
         </div>
       </div>
     </section>

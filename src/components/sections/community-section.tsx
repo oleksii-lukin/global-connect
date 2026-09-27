@@ -1,5 +1,4 @@
 import Image from "next/image";
-import Link from "next/link";
 
 import { SectionHeading } from "@/components/sections/section";
 import type { CityData, HomepageSectionData } from "@/types/models";
@@ -28,9 +27,11 @@ const DEFAULT_CITY_BG = "bg-muted/30";
 export function CommunitySection({
   config,
   cities,
+  communityUrl,
 }: {
   config?: HomepageSectionData;
   cities?: CityData[];
+  communityUrl: string;
 }) {
   return (
     <section id="community" className="px-6 py-24 sm:py-32">
@@ -55,15 +56,17 @@ export function CommunitySection({
                 </li>
               ))}
             </ul>
-            <Link
-              href="/community"
+            <a
+              href={communityUrl}
+              target="_blank"
+              rel="noopener noreferrer"
               className="group mt-10 inline-flex items-center gap-2 text-base font-medium text-foreground"
             >
               Join the community
               <span className="transition-transform duration-300 group-hover:translate-x-1">
-                →
+                &rarr;
               </span>
-            </Link>
+            </a>
           </div>
 
           <div>

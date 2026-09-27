@@ -519,38 +519,18 @@
       ]
     },
     {
-      "sys": { "id": "community", "type": "ContentType" },
-      "name": "Community Topic",
-      "description": "A discussion topic shown on the Community page.",
-      "displayField": "label",
+      "sys": { "id": "siteSettings", "type": "ContentType" },
+      "name": "Site Settings",
+      "description": "Site-wide links and global configuration. One entry per space.",
+      "displayField": "communityUrl",
       "fields": [
         {
-          "id": "emoji",
-          "name": "Emoji",
+          "id": "communityUrl",
+          "name": "Community URL (Telegram)",
           "type": "Symbol",
           "localized": false,
           "required": true,
-          "validations": [{ "regexp": { "pattern": "^.+$", "flags": "" } }],
-          "disabled": false,
-          "omitted": false
-        },
-        {
-          "id": "label",
-          "name": "Label",
-          "type": "Symbol",
-          "localized": false,
-          "required": true,
-          "validations": [],
-          "disabled": false,
-          "omitted": false
-        },
-        {
-          "id": "members",
-          "name": "Members",
-          "type": "Symbol",
-          "localized": false,
-          "required": false,
-          "validations": [],
+          "validations": [{ "regexp": { "pattern": "^https://", "flags": "" } }],
           "disabled": false,
           "omitted": false
         }

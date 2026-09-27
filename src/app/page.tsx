@@ -21,6 +21,7 @@ import {
   getPartners,
   getPathSteps,
   getSessions,
+  getSiteSettings,
   getStories,
 } from "@/lib/contentful/queries";
 
@@ -29,7 +30,7 @@ export const metadata = {
 };
 
 export default async function HomePage() {
-  const [opportunities, sessions, guides, stories, partners, pathSteps, interests, cities, homepageSections] =
+  const [opportunities, sessions, guides, stories, partners, pathSteps, interests, cities, homepageSections, siteSettings] =
     await Promise.all([
       getOpportunities(),
       getSessions(),
@@ -40,6 +41,7 @@ export default async function HomePage() {
       getInterests(),
       getCities(),
       getHomepageSections(),
+      getSiteSettings(),
     ]);
 
   const featured = opportunities.filter((o) => o.featured);
@@ -70,7 +72,7 @@ export default async function HomePage() {
       <SiteHeader />
       <main className="flex-1">
         {isEnabled(sections.hero) && (
-          <HeroSection featured={heroFeatured} config={sections.hero} />
+          <HeroSection featured={heroFeatured} config={sections.hero} communityUrl={siteSettings.communityUrl} />
         )}
         {isEnabled(sections.stats) && (
           <Reveal>
@@ -99,12 +101,12 @@ export default async function HomePage() {
         )}
         {isEnabled(sections.stories) && (
           <Reveal delay={80}>
-            <StoriesSection stories={stories} config={sections.stories} />
+            <StoriesSection stories={stories} config={sections.stories} communityUrl={siteSettings.communityUrl} />
           </Reveal>
         )}
         {isEnabled(sections.community) && (
           <Reveal>
-            <CommunitySection config={sections.community} cities={cities} />
+            <CommunitySection config={sections.community} cities={cities} communityUrl={siteSettings.communityUrl} />
           </Reveal>
         )}
         {isEnabled(sections.discovery) && (
@@ -119,7 +121,7 @@ export default async function HomePage() {
         )}
         {isEnabled(sections.finalCta) && (
           <Reveal delay={80}>
-            <FinalCtaSection config={sections.finalCta} />
+            <FinalCtaSection config={sections.finalCta} communityUrl={siteSettings.communityUrl} />
           </Reveal>
         )}
       </main>

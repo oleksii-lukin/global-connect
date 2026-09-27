@@ -70,7 +70,7 @@ A **content type** is like a database table (e.g. `Opportunity`), a **field** is
 column (e.g. `funding`), and an **entry** is a row (a specific opportunity).
 
 The model for this site lives in [`content-model.json`](./content-model.json). It
-defines 10 content types:
+defines 12 content types:
 
 | Content type | Purpose |
 | --- | --- |
@@ -82,7 +82,7 @@ defines 10 content types:
 | `Partner` | organisations in the "Built with people who believe…" row |
 | `Path Step` | the 5-step "How Global Connect works" section |
 | `Interest` | the "Personalised discovery" topic chips |
-| `Community Topic` | discussion topics shown on the Community page |
+| `Site Settings` | site-wide links and global configuration (one entry) |
 | `City` | initials + city name shown in the community avatar grid |
 | `Homepage Section` | heading, description and image for each homepage section |
 
@@ -150,7 +150,7 @@ What gets seeded:
 - 6 **Partner** entries
 - 5 **Path Step** entries (Discover, Understand, Prepare, Apply, Grow)
 - 8 **Interest** entries
-- 10 **Community Topic** entries (discussion topics for the Community page)
+- 1 **Site Settings** entry (site-wide links and configuration)
 - 8 **City** entries (initials + city name for the community avatar grid)
 - 11 **Homepage Section** entries (configures the heading, description and image of each homepage section)
 

@@ -74,11 +74,8 @@ export interface InterestData {
   emoji: string;
 }
 
-export interface CommunityData {
-  id: string;
-  emoji: string;
-  label: string;
-  members: string;
+export interface SiteSettingsData {
+  communityUrl: string;
 }
 
 export interface VideoData {

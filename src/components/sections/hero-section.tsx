@@ -1,6 +1,4 @@
 import Image from "next/image";
-import { Suspense } from "react";
-import { Show, SignInButton } from "@clerk/nextjs";
 
 import { Button } from "@/components/ui/button";
 import { SectionEyebrow } from "@/components/sections/section";
@@ -12,9 +10,11 @@ const chipTranslations = ["", "sm:translate-x-10", "sm:-translate-x-4"];
 export function HeroSection({
   featured,
   config,
+  communityUrl,
 }: {
   featured: OpportunityData[];
   config?: HomepageSectionData;
+  communityUrl: string;
 }) {
   const chips = featured.slice(0, 3);
   const titleWords = config?.title?.trim().split(/\s+/);
@@ -57,36 +57,25 @@ export function HeroSection({
 
           <div className="mt-9 flex flex-col gap-3 sm:flex-row">
             <Button className="w-full sm:w-auto" render={<a href="/opportunities" />}>
-              Explore opportunities <span aria-hidden="true">→</span>
+              Explore opportunities <span aria-hidden="true">&rarr;</span>
             </Button>
-            <Suspense
-              fallback={
-                <Button className="w-full sm:w-auto" variant="outline" disabled>
-                  Join Global Connect
-                </Button>
+            <Button
+              className="w-full sm:w-auto"
+              variant="outline"
+              render={
+                <a
+                  href={communityUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                />
               }
             >
-              <Show
-                when="signed-out"
-                fallback={
-                  <Button
-                    className="w-full sm:w-auto"
-                    variant="outline"
-                    render={<a href="/community" />}
-                  >
-                    Join the community
-                  </Button>
-                }
-              >
-                <SignInButton mode="modal">
-                  <Button className="w-full sm:w-auto" variant="outline">Join Global Connect</Button>
-                </SignInButton>
-              </Show>
-            </Suspense>
+              Join Global Connect
+            </Button>
           </div>
 
           <p className="mt-8 text-sm text-muted-foreground">
-            1,000+ members · 500+ opportunities shared · 35 online sessions
+            1,000+ members &middot; 500+ opportunities shared &middot; 35 online sessions
           </p>
         </div>
 
@@ -131,7 +120,7 @@ export function HeroSection({
                     {o.title}
                   </p>
                   <p className="truncate text-xs text-muted-foreground">
-                    {o.country} · {o.funding}
+                    {o.country} &middot; {o.funding}
                   </p>
                 </div>
               </div>
