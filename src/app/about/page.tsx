@@ -61,10 +61,10 @@ export default async function AboutPage() {
             Share opportunities with our community, run a session, or become a
             partner. Reach out at{" "}
             <a
-              href="mailto:hello@globalconnect.example"
+              href={`mailto:${siteSettings.contactEmail}`}
               className="text-brand hover:underline"
             >
-              hello@globalconnect.example
+              {siteSettings.contactEmail}
             </a>
             .
           </p>

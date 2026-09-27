@@ -76,6 +76,7 @@ export interface InterestData {
 
 export interface SiteSettingsData {
   communityUrl: string;
+  contactEmail: string;
 }
 
 export interface VideoData {

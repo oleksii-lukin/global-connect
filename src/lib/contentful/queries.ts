@@ -37,7 +37,7 @@ import type {
   SiteSettingsData,
   StoryData,
 } from "@/types/models";
-import { FALLBACK_COMMUNITY_URL } from "@/lib/community";
+import { FALLBACK_COMMUNITY_URL, FALLBACK_CONTACT_EMAIL } from "@/lib/community";
 
 type ResolvedAssetLink =
   | UnresolvedLink<"Asset">
@@ -306,9 +306,13 @@ export async function getSiteSettings(): Promise<SiteSettingsData> {
   });
   const entry = r.items[0];
   const url = entry?.fields.communityUrl;
+  const email = entry?.fields.contactEmail;
+  const EMAIL_PATTERN = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
   return {
     communityUrl:
       url && url.startsWith("https://") ? url : FALLBACK_COMMUNITY_URL,
+    contactEmail:
+      email && EMAIL_PATTERN.test(email) ? email : FALLBACK_CONTACT_EMAIL,
   };
 }
 

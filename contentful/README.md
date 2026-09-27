@@ -82,7 +82,7 @@ defines 11 content types:
 | `Partner` | organisations in the "Built with people who believe…" row |
 | `Path Step` | the 5-step "How Global Connect works" section |
 | `Interest` | the "Personalised discovery" topic chips |
-| `Site Settings` | site-wide links and global configuration (one entry) |
+| `Site Settings` | community URL, contact email and global configuration (one entry) |
 | `City` | initials + city name shown in the community avatar grid |
 | `Homepage Section` | heading, description and image for each homepage section |
 
@@ -150,7 +150,7 @@ What gets seeded:
 - 6 **Partner** entries
 - 5 **Path Step** entries (Discover, Understand, Prepare, Apply, Grow)
 - 8 **Interest** entries
-- 1 **Site Settings** entry (site-wide links and configuration)
+- 1 **Site Settings** entry (community URL, contact email and configuration)
 - 8 **City** entries (initials + city name for the community avatar grid)
 - 11 **Homepage Section** entries (configures the heading, description and image of each homepage section)
 

@@ -533,6 +533,18 @@
           "validations": [{ "regexp": { "pattern": "^https://", "flags": "" } }],
           "disabled": false,
           "omitted": false
+        },
+        {
+          "id": "contactEmail",
+          "name": "Contact Email",
+          "type": "Symbol",
+          "localized": false,
+          "required": true,
+          "validations": [
+            { "regexp": { "pattern": "^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$", "flags": "" } }
+          ],
+          "disabled": false,
+          "omitted": false
         }
       ]
     },

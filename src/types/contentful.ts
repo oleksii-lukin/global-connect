@@ -137,6 +137,7 @@ export type Video = Entry<VideoSkeleton, undefined, "en-US">;
 export type SiteSettingsSkeleton = EntrySkeletonType<
   {
     communityUrl: EntryFieldTypes.Symbol<string>;
+    contactEmail: EntryFieldTypes.Symbol<string>;
   },
   "siteSettings"
 >;

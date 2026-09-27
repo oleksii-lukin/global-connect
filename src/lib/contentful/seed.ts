@@ -1595,7 +1595,7 @@ export const seedInterests: InterestData[] = [
 // ---------------------------------------------------------------------------
 
 export const seedSiteSettings: SiteSettingsData[] = [
-  { communityUrl: "https://t.me/globalconnect" },
+  { communityUrl: "https://t.me/globalconnect", contactEmail: "hello@globalconnect.example" },
 ];
 
 // ---------------------------------------------------------------------------
